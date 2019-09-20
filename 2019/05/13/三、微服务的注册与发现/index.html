@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Eureka简介Eureka是Netflix（一家在线影片租赁提供商）开源的服务发现组件，本身是一个基于REST的服务。它包含Server和Client两部分。Spring Cloud将它集成在子项目Spring Cloud Netflix中，从而实现微服务的注册与发现。">
+<meta name="keywords" content="闲着没事总得干点什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三、微服务的注册与发现">
+<meta property="og:url" content="http://yoursite.com/2019/05/13/三、微服务的注册与发现/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="Eureka简介Eureka是Netflix（一家在线影片租赁提供商）开源的服务发现组件，本身是一个基于REST的服务。它包含Server和Client两部分。Spring Cloud将它集成在子项目Spring Cloud Netflix中，从而实现微服务的注册与发现。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/05/13/三、微服务的注册与发现/132_120905162407_1.jpg">
+<meta property="og:updated_time" content="2019-09-20T02:37:04.807Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三、微服务的注册与发现">
+<meta name="twitter:description" content="Eureka简介Eureka是Netflix（一家在线影片租赁提供商）开源的服务发现组件，本身是一个基于REST的服务。它包含Server和Client两部分。Spring Cloud将它集成在子项目Spring Cloud Netflix中，从而实现微服务的注册与发现。">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/13/三、微服务的注册与发现/132_120905162407_1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/13/三、微服务的注册与发现/">
+
+
+
+
+
+  <title>三、微服务的注册与发现 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/13/三、微服务的注册与发现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">三、微服务的注册与发现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-13T07:23:12+08:00">
+                2019-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Cloud-微服务架构实战/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Cloud 微服务架构实战</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Eureka简介"><a href="#Eureka简介" class="headerlink" title="Eureka简介"></a>Eureka简介</h3><p>Eureka是Netflix（一家在线影片租赁提供商）开源的服务发现组件，本身是一个基于REST的服务。它包含Server和Client两部分。Spring Cloud将它集成在子项目Spring Cloud Netflix中，从而实现微服务的注册与发现。</p>
+<a id="more"></a>
+<h3 id="Eureka原理"><a href="#Eureka原理" class="headerlink" title="Eureka原理"></a>Eureka原理</h3><p><img src="/2019/05/13/三、微服务的注册与发现/132_120905162407_1.jpg" alt></p>
+<ul>
+<li>Eureka Server提供服务注册服务，各个节点启动后，会在Eureka Server中注册自己的信息（例如IP、端口、微服务名称等），这样EurekaServer中的服务注册表中将会存储所有可用服务节点的信息，服务节点的信息可以在界面中直观的看到。</li>
+<li>Eureka Client是一个java客户端，用于简化与Eureka Server的交互，客户端同时也就别一个内置的、使用轮询(round-robin)负载算法的负载均衡器。</li>
+<li>在应用启动后，将会向Eureka Server发送心跳，默认周期为30秒，如果Eureka Server在多个心跳周期内没有接收到某个节点的心跳，Eureka Server将会从服务注册表中把这个服务节点移除(默认90秒)。</li>
+<li>默认情况下，Eureka Server同时也是Eureka Client。多个Eureka Server实例之间通过复制的方式完成服务注册表中数据的同步。</li>
+<li>Eureka还提供了客户端缓存机制，微服务无需每次请求都查询Eureka Server，从而降低Eureka Server的压力；其次，即使所有的Eureka Server都宕掉，客户端依然可以利用缓存中的信息消费其他服务的API。<br>  综上，Eureka通过心跳检查、客户端缓存等机制，确保了系统的高可用性、灵活性和可伸缩性</li>
+</ul>
+<h3 id="编写Eureka-Server"><a href="#编写Eureka-Server" class="headerlink" title="编写Eureka Server"></a>编写Eureka Server</h3><h4 id="创建Spring-Boot项目"><a href="#创建Spring-Boot项目" class="headerlink" title="创建Spring Boot项目"></a>创建Spring Boot项目</h4><h4 id="引入以下依赖"><a href="#引入以下依赖" class="headerlink" title="引入以下依赖"></a>引入以下依赖</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="编写启动类"><a href="#编写启动类" class="headerlink" title="编写启动类"></a>编写启动类</h4><p>在启动类上添加@EnableEurekaServer注解，声明这是一个Eureka Server。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableEurekaServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EurekaApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(EurekaApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="在配置文件application-yml中添加一下内容"><a href="#在配置文件application-yml中添加一下内容" class="headerlink" title="在配置文件application.yml中添加一下内容"></a>在配置文件application.yml中添加一下内容</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8761 # 指定该Eureka实例的端口</span><br><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    registerWithEureka: false       #表示是否将自己注册到Eureka Server,默认为true</span><br><span class="line">    fetchRegistry: false            #表示是否从Eureka Server获取注册信息，默认为true</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/      #设置与Eureka Server交互的地址，多个地址见可用,分隔</span><br></pre></td></tr></table></figure>
+<p>这样一个Eureka Server就编写完成了。</p>
+<h3 id="将微服务注册到Eureka-Server上"><a href="#将微服务注册到Eureka-Server上" class="headerlink" title="将微服务注册到Eureka Server上"></a>将微服务注册到Eureka Server上</h3><h4 id="在pom-xml中添加以下依赖"><a href="#在pom-xml中添加以下依赖" class="headerlink" title="在pom.xml中添加以下依赖"></a>在pom.xml中添加以下依赖</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="在配置文件application-yml中添加以下配置"><a href="#在配置文件application-yml中添加以下配置" class="headerlink" title="在配置文件application.yml中添加以下配置"></a>在配置文件application.yml中添加以下配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: application-name</span><br><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/</span><br><span class="line">  instance:</span><br><span class="line">    prefer-ip-address: true   #表示将自己的IP注册到Eureka Server，默认为false,表示注册微服务所在操作系统的hostname到Eureka Server</span><br></pre></td></tr></table></figure>
+<h4 id="编写启动类-1"><a href="#编写启动类-1" class="headerlink" title="编写启动类"></a>编写启动类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProviderUserApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ProviderUserApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样即可将微服务注册到Eureka Server上。<br>注意：<br>    1.在Spring Cloud Edgware 之前，要想将微服务注册到Eureka Server或其他服务发现组件上，必须在启动类添加@EnableEurekaClient或@EnableDiscoveryClient<br>    2.在Spring Cloud Edgware 以及更高版本中，只需要添加相关依赖，即可自动注册。<br>    3.若不想将服务注册到Eureka Server，只需设置 spring.cloud.service-registry.auto-registration.enabled=false，或 @EnableDiscoveryClient(autoRegister = false) 即可。<br>    4.@EnableEurekaClient和@EnableDiscoveryClient的区别：spring cloud中discovery service有许多种实现（eureka、consul、zookeeper等等），@EnableDiscoveryClient基于spring-cloud-commons, @EnableEurekaClient基于spring-cloud-netflix。<br>       简单的话来说，就是如果选用的注册中心是eureka，那么就推荐@EnableEurekaClient，如果是其他的注册中心，那么推荐使用@EnableDiscoveryClient。</p>
+<h3 id="Eureka-Server用户认证"><a href="#Eureka-Server用户认证" class="headerlink" title="Eureka Server用户认证"></a>Eureka Server用户认证</h3><h4 id="在pom-xml文件中添加如下依赖"><a href="#在pom-xml文件中添加如下依赖" class="headerlink" title="在pom.xml文件中添加如下依赖"></a>在pom.xml文件中添加如下依赖</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="在application-yml中添加以下配置"><a href="#在application-yml中添加以下配置" class="headerlink" title="在application.yml中添加以下配置"></a>在application.yml中添加以下配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">security:</span><br><span class="line">  basic:</span><br><span class="line">    enabled: true # 开启基于HTTP basic的认证</span><br><span class="line">  user:</span><br><span class="line">    name: user # 配置登录的账号是user</span><br><span class="line">    password: password123 # 配置登录的密码是password123</span><br></pre></td></tr></table></figure>
+<p>Server添加了基于HTTP basic的认证，如果不设置这段内容，账号默认：user，密码是一个随机值，该值会在启动是打印出来。</p>
+<p>将 Eureka Server 中的eureka.client.serviceUrl.defaultZone<br>修改为<a href="http://user:password@EUREKA_HOST:EUREKA_PORT/eureka/" target="_blank" rel="noopener">http://user:password@EUREKA_HOST:EUREKA_PORT/eureka/</a> 的形式。    </p>
+<h3 id="多网卡环境下的IP选择"><a href="#多网卡环境下的IP选择" class="headerlink" title="多网卡环境下的IP选择"></a>多网卡环境下的IP选择</h3><h4 id="忽略指定名称的网卡"><a href="#忽略指定名称的网卡" class="headerlink" title="忽略指定名称的网卡"></a>忽略指定名称的网卡</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  cloud:</span><br><span class="line">    inetutils:</span><br><span class="line">      ignored-interfaces:</span><br><span class="line">        - docker0</span><br><span class="line">        - veth.*</span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    prefer-ip-address: true</span><br></pre></td></tr></table></figure>
+<p>这样就可以忽略docker0网卡以及以veth开头的网卡</p>
+<h4 id="使用正则表达式，指定使用的网络地址"><a href="#使用正则表达式，指定使用的网络地址" class="headerlink" title="使用正则表达式，指定使用的网络地址"></a>使用正则表达式，指定使用的网络地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  cloud:</span><br><span class="line">    inetutils:</span><br><span class="line">      preferred-networks:</span><br><span class="line">        - 192.168</span><br><span class="line">        - 10.0</span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    prefer-ip-address: true</span><br></pre></td></tr></table></figure>
+<h4 id="只使用站点本地地址"><a href="#只使用站点本地地址" class="headerlink" title="只使用站点本地地址"></a>只使用站点本地地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  cloud:</span><br><span class="line">    inetutils:</span><br><span class="line">      use-only-site-local-interfaces: true</span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    prefer-ip-address: true</span><br></pre></td></tr></table></figure>
+<h4 id="手动指定IP地址"><a href="#手动指定IP地址" class="headerlink" title="手动指定IP地址"></a>手动指定IP地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    prefer-ip-address: true</span><br><span class="line">    ip-address: 127.0.0.1</span><br></pre></td></tr></table></figure>
+<h3 id="Eureka-Server的自我保护模式与健康检查"><a href="#Eureka-Server的自我保护模式与健康检查" class="headerlink" title="Eureka Server的自我保护模式与健康检查"></a>Eureka Server的自我保护模式与健康检查</h3><h4 id="自我保护模式"><a href="#自我保护模式" class="headerlink" title="自我保护模式"></a>自我保护模式</h4><p>当Eureka Server节点在短时间内丢失过多客户端时（可能发生了网络分区故障），那么这个节点就会进入自我保护模式。一旦进入该模式，Eureka Server就会保护服务注册表中的信息，不再删除服务注册表中的数据（即不会注销任何服务）。当网络故障恢复后，该Eureka Server节点会自动退    出自我保护模式。使用自我保护模式，可以让Eureka 集群更加健壮、稳定。</p>
+<p>可以使用eureka.server.enable-self-preservation = false 禁用自我保护模式。</p>
+<h4 id="健康检查"><a href="#健康检查" class="headerlink" title="健康检查"></a>健康检查</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    healthcheck:</span><br><span class="line">      enabled: true</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/12/二、微服务开发框架-SpringCloud/" rel="next" title="二、微服务开发框架--SpringCloud">
+                <i class="fa fa-chevron-left"></i> 二、微服务开发框架--SpringCloud
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/15/四、使用Ribbon实现客户端侧负载均衡/" rel="prev" title="四、使用Ribbon实现客户端侧负载均衡">
+                四、使用Ribbon实现客户端侧负载均衡 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka简介"><span class="nav-number">1.</span> <span class="nav-text">Eureka简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka原理"><span class="nav-number">2.</span> <span class="nav-text">Eureka原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写Eureka-Server"><span class="nav-number">3.</span> <span class="nav-text">编写Eureka Server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Spring-Boot项目"><span class="nav-number">3.1.</span> <span class="nav-text">创建Spring Boot项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引入以下依赖"><span class="nav-number">3.2.</span> <span class="nav-text">引入以下依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写启动类"><span class="nav-number">3.3.</span> <span class="nav-text">编写启动类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在配置文件application-yml中添加一下内容"><span class="nav-number">3.4.</span> <span class="nav-text">在配置文件application.yml中添加一下内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将微服务注册到Eureka-Server上"><span class="nav-number">4.</span> <span class="nav-text">将微服务注册到Eureka Server上</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在pom-xml中添加以下依赖"><span class="nav-number">4.1.</span> <span class="nav-text">在pom.xml中添加以下依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在配置文件application-yml中添加以下配置"><span class="nav-number">4.2.</span> <span class="nav-text">在配置文件application.yml中添加以下配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写启动类-1"><span class="nav-number">4.3.</span> <span class="nav-text">编写启动类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka-Server用户认证"><span class="nav-number">5.</span> <span class="nav-text">Eureka Server用户认证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在pom-xml文件中添加如下依赖"><span class="nav-number">5.1.</span> <span class="nav-text">在pom.xml文件中添加如下依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在application-yml中添加以下配置"><span class="nav-number">5.2.</span> <span class="nav-text">在application.yml中添加以下配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多网卡环境下的IP选择"><span class="nav-number">6.</span> <span class="nav-text">多网卡环境下的IP选择</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#忽略指定名称的网卡"><span class="nav-number">6.1.</span> <span class="nav-text">忽略指定名称的网卡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用正则表达式，指定使用的网络地址"><span class="nav-number">6.2.</span> <span class="nav-text">使用正则表达式，指定使用的网络地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#只使用站点本地地址"><span class="nav-number">6.3.</span> <span class="nav-text">只使用站点本地地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动指定IP地址"><span class="nav-number">6.4.</span> <span class="nav-text">手动指定IP地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka-Server的自我保护模式与健康检查"><span class="nav-number">7.</span> <span class="nav-text">Eureka Server的自我保护模式与健康检查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自我保护模式"><span class="nav-number">7.1.</span> <span class="nav-text">自我保护模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#健康检查"><span class="nav-number">7.2.</span> <span class="nav-text">健康检查</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Ribbon简介Ribbon是Netflix发布的负载均衡器，它有助于控制HTTP和TCP客户端的行为。为Ribbon配置服务提供者地址列表后，Ribbon就可基于某种负载均衡算法，自动地帮助服务消费者去请求。Ribbon默认为我们提供了很多地负载均衡算法，例如轮询、随机等。当然，我们也可为Ribbon实现自定义地负载均衡算法。在Spring Cloud中，当Ribbon与Eureka配置使用时，">
+<meta name="keywords" content="闲着没事总得干点什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四、使用Ribbon实现客户端侧负载均衡">
+<meta property="og:url" content="http://yoursite.com/2019/05/15/四、使用Ribbon实现客户端侧负载均衡/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="Ribbon简介Ribbon是Netflix发布的负载均衡器，它有助于控制HTTP和TCP客户端的行为。为Ribbon配置服务提供者地址列表后，Ribbon就可基于某种负载均衡算法，自动地帮助服务消费者去请求。Ribbon默认为我们提供了很多地负载均衡算法，例如轮询、随机等。当然，我们也可为Ribbon实现自定义地负载均衡算法。在Spring Cloud中，当Ribbon与Eureka配置使用时，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/05/15/四、使用Ribbon实现客户端侧负载均衡/u=4041859888,314023324&fm=214&gp=0.jpg">
+<meta property="og:updated_time" content="2019-09-20T02:36:51.106Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="四、使用Ribbon实现客户端侧负载均衡">
+<meta name="twitter:description" content="Ribbon简介Ribbon是Netflix发布的负载均衡器，它有助于控制HTTP和TCP客户端的行为。为Ribbon配置服务提供者地址列表后，Ribbon就可基于某种负载均衡算法，自动地帮助服务消费者去请求。Ribbon默认为我们提供了很多地负载均衡算法，例如轮询、随机等。当然，我们也可为Ribbon实现自定义地负载均衡算法。在Spring Cloud中，当Ribbon与Eureka配置使用时，">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/15/四、使用Ribbon实现客户端侧负载均衡/u=4041859888,314023324&fm=214&gp=0.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/15/四、使用Ribbon实现客户端侧负载均衡/">
+
+
+
+
+
+  <title>四、使用Ribbon实现客户端侧负载均衡 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/15/四、使用Ribbon实现客户端侧负载均衡/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">四、使用Ribbon实现客户端侧负载均衡</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-15T09:46:00+08:00">
+                2019-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Cloud-微服务架构实战/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Cloud 微服务架构实战</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Ribbon简介"><a href="#Ribbon简介" class="headerlink" title="Ribbon简介"></a>Ribbon简介</h3><p>Ribbon是Netflix发布的负载均衡器，它有助于控制HTTP和TCP客户端的行为。为Ribbon配置服务提供者地址列表后，Ribbon就可基于某种负载均衡算法，自动地帮助服务消费者去请求。Ribbon默认为我们提供了很多地负载均衡算法，例如轮询、随机等。当然，我们也可为Ribbon实现自定义地负载均衡算法。<br>在Spring Cloud中，当Ribbon与Eureka配置使用时，Ribbon可自动从Eureka Server 获取服务提供者地址列表，并基于负载均衡算法，请求其中一个服务提供者实例。如图展示了Ribbon 与 Eureka 配合使用时地大致架构。</p>
+<p><img src="/2019/05/15/四、使用Ribbon实现客户端侧负载均衡/u=4041859888,314023324&amp;fm=214&amp;gp=0.jpg" alt></p>
+<a id="more"></a>
+<h3 id="为服务消费者整合Ribbon"><a href="#为服务消费者整合Ribbon" class="headerlink" title="为服务消费者整合Ribbon"></a>为服务消费者整合Ribbon</h3><h4 id="引入依赖包"><a href="#引入依赖包" class="headerlink" title="引入依赖包"></a>引入依赖包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-cloud-starter-netflix-ribbon&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>如果添加了spring-cloud-starter-netflix-eureka-client，该依赖已包含spring-cloud-starter-netflix-ribbon，无须再次引入。</p>
+<h3 id="Ribbon自定义配置"><a href="#Ribbon自定义配置" class="headerlink" title="Ribbon自定义配置"></a>Ribbon自定义配置</h3><p>使用 Java 代码自定义Ribbon配置</p>
+<ul>
+<li>Spring Cloud 中，Ribbon的默认配置格式（BeanType beanName: ClassName)：<ol>
+<li>IClientConfig ribbonClientConfig: DefaultClientConfigImpl  （Ribbon 的客户端配置，默认采用com.netflix.client.config.DefaultClientConfigImpl 实现）</li>
+<li>IRule ribbonRule: ZoneAvoidanceRule （Ribbon 的负载均衡策略， 默认采用com.netflix.loadbalancer.ZoneAvoidanceRule实现，该策略能够在多区域环境下选择最佳区域的实例进行访问）</li>
+<li>IPing ribbonPing: DummyPing （ Ribbon 的实例检查策略，默认采用com.netflix.loadbalancer.DummyPing实现，该检查策略是一个特殊的实现，实际上他并不会检查实例是否可用，而是始终返回 true ，默认认为所有服务实例都是可以使用）</li>
+<li>ServerList<server> ribbonServerList: ConfigurationBasedServerList ( 服务实例清单的维护机制)</server></li>
+<li>ServerListFilter<server> ribbonServerListFilter: ZonePreferenceServerListFilter ( 服务实例清单过滤机制)</server></li>
+<li>ILoadBalancer ribbonLoadBalancer: ZoneAwareLoadBalancer ( 负载均衡器)</li>
+<li>ServerListUpdater ribbonServerListUpdater: PollingServerListUpdater (动态更新服务列表策略)</li>
+</ol>
+</li>
+</ul>
+<h4 id="创建Ribbon配置类"><a href="#创建Ribbon配置类" class="headerlink" title="创建Ribbon配置类"></a>创建Ribbon配置类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 该类为Ribbon的配置类</span></span><br><span class="line"><span class="comment">  * 注意：该类不应该在主应用程序上下文的<span class="doctag">@ComponentScan</span> 中。</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RibbonConfiguration</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IRule <span class="title">ribbonRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 负载均衡规则，改为随机</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RandomRule();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="创建一个空类，并在其上添加-Configuration注解和-RibbonClient注解"><a href="#创建一个空类，并在其上添加-Configuration注解和-RibbonClient注解" class="headerlink" title="创建一个空类，并在其上添加@Configuration注解和@RibbonClient注解"></a>创建一个空类，并在其上添加@Configuration注解和@RibbonClient注解</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 使用RibbonClient，为特定name的Ribbon Client自定义配置.</span></span><br><span class="line"><span class="comment">  * 使用<span class="doctag">@RibbonClient</span>的configuration属性，指定Ribbon的配置类.</span></span><br><span class="line"><span class="comment">  * 可参考的示例：</span></span><br><span class="line"><span class="comment">  * http://spring.io/guides/gs/client-side-load-balancing/</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@author</span> 周立</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@RibbonClient</span>(name = <span class="string">"microservice-provider-user"</span>, configuration = RibbonConfiguration.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestConfiguration</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>必须注意的是，本例中的RibbonConfiguration类不能存放在主应用程序上下文的@ComponentScan 所扫描的包中，否则该类中的配置信息将被所有的@RibbonClient共享。</p>
+<p>全局配置：可使用@RibbonClients 注解为所有的Ribbon Client提供默认配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RibbonClients</span>(defaultConfiguration = DefaultRibbonConfig.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RibbonClientDefaultConfigurationTestsConfig</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">BazServiceList</span> <span class="keyword">extends</span> <span class="title">ConfigurationBasedServerList</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">BazServiceList</span><span class="params">(IClientConfig config)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>.initWithNiwsConfig(config);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DefaultRibbonConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IRule <span class="title">ribbonRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BestAvailableRule();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IPing <span class="title">ribbonPing</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PingUrl();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ServerList&lt;Server&gt; <span class="title">ribbonServerList</span><span class="params">(IClientConfig config)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RibbonClientDefaultConfigurationTestsConfig.BazServiceList(config);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ServerListSubsetFilter <span class="title">serverListFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ServerListSubsetFilter();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用属性自定义Ribbon 配置<br>从Spring Cloud Camden RELEASE 开始，Ribbon 支持使用属性自定义配置。<br>支持的属性如下，配置的前缀是<clientname>.ribbon. 。其中，<clientname> 是 RibbonClient 的名称，如果省略，则表示全局配置</clientname></clientname></p>
+<ul>
+<li>NFLoadBalancerClassName : 配置ILoadBalancer 的实现类。</li>
+<li>NFLoadBalancerRuleClassName :  配置IRule 的实现类。</li>
+<li>NFLoadBalancerPingClassName :  配置IPing 的实现类。</li>
+<li>NIWSServerListClassName :  配置ServerList 的实现类。</li>
+<li>NIWSServerListFilterClassName :  配置ServerListFilter 的实现类。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">microservice-provider-user:</span><br><span class="line">  ribbon:</span><br><span class="line">    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule</span><br></pre></td></tr></table></figure>
+<h3 id="脱离Eureka-使用Ribbon"><a href="#脱离Eureka-使用Ribbon" class="headerlink" title="脱离Eureka 使用Ribbon"></a>脱离Eureka 使用Ribbon</h3><h4 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-cloud-starter-netflix-ribbon&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="配置文件application-yml-相关配置"><a href="#配置文件application-yml-相关配置" class="headerlink" title="配置文件application.yml 相关配置"></a>配置文件application.yml 相关配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8010</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: microservice-consumer-movie</span><br><span class="line">microservice-provider-user:</span><br><span class="line">  ribbon:</span><br><span class="line">    listOfServers: localhost:8000,localhost:8001</span><br></pre></td></tr></table></figure>
+<h3 id="饥饿加载"><a href="#饥饿加载" class="headerlink" title="饥饿加载"></a>饥饿加载</h3><p>Spring Cloud 会为每个名称的 Ribbon Client 维护一个子应用程序上下文，这个上下文默认是懒加载的。指定名称的 Ribbon Client 第一次请求时，对应的上下文才会被加载，因此，首次请求往往会比较慢。从Spring Cloud Dalston 开始，我们可配置饥饿加载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ribbon:</span><br><span class="line">  eager-load:</span><br><span class="line">    enabled: true</span><br><span class="line">    clients: client1, client2</span><br></pre></td></tr></table></figure>
+<p>这样，对于名为client1、 client2的Ribbon Client，将在启动时就加载对应的子应用程序上下文，从而提高首次请求的访问速度。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/13/三、微服务的注册与发现/" rel="next" title="三、微服务的注册与发现">
+                <i class="fa fa-chevron-left"></i> 三、微服务的注册与发现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/23/Synchronized同步锁优化/" rel="prev" title="Synchronized同步锁优化">
+                Synchronized同步锁优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ribbon简介"><span class="nav-number">1.</span> <span class="nav-text">Ribbon简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为服务消费者整合Ribbon"><span class="nav-number">2.</span> <span class="nav-text">为服务消费者整合Ribbon</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引入依赖包"><span class="nav-number">2.1.</span> <span class="nav-text">引入依赖包</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ribbon自定义配置"><span class="nav-number">3.</span> <span class="nav-text">Ribbon自定义配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Ribbon配置类"><span class="nav-number">3.1.</span> <span class="nav-text">创建Ribbon配置类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个空类，并在其上添加-Configuration注解和-RibbonClient注解"><span class="nav-number">3.2.</span> <span class="nav-text">创建一个空类，并在其上添加@Configuration注解和@RibbonClient注解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#脱离Eureka-使用Ribbon"><span class="nav-number">4.</span> <span class="nav-text">脱离Eureka 使用Ribbon</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引入依赖"><span class="nav-number">4.1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件application-yml-相关配置"><span class="nav-number">4.2.</span> <span class="nav-text">配置文件application.yml 相关配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#饥饿加载"><span class="nav-number">5.</span> <span class="nav-text">饥饿加载</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>
