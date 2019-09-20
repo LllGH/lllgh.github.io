@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="应用容错三板斧 超时机制超时机制你懂的，配置一下超时时间，例如1秒——每次请求在1秒内必须返回，否则到点就把线程掐死，释放资源！思路：一旦超时，就释放资源。由于释放资源速度较快，应用就不会那么容易被拖死。  舱壁模式软件世界里的仓壁模式可以这样理解：M类使用线程池1，N类使用线程池2，彼此的线程池不同，并且为每个类分配的线程池较小，例如coreSize=10。举个例子：M类调用B服务，N类调用C服">
+<meta name="keywords" content="闲着没事总得干点什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="六、使用Hystrix实现微服务的容错处理">
+<meta property="og:url" content="http://yoursite.com/2019/05/17/六、使用Hystrix实现微服务的容错处理/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="应用容错三板斧 超时机制超时机制你懂的，配置一下超时时间，例如1秒——每次请求在1秒内必须返回，否则到点就把线程掐死，释放资源！思路：一旦超时，就释放资源。由于释放资源速度较快，应用就不会那么容易被拖死。  舱壁模式软件世界里的仓壁模式可以这样理解：M类使用线程池1，N类使用线程池2，彼此的线程池不同，并且为每个类分配的线程池较小，例如coreSize=10。举个例子：M类调用B服务，N类调用C服">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/05/17/六、使用Hystrix实现微服务的容错处理/hystrix-status-trans.png">
+<meta property="og:updated_time" content="2019-09-20T12:48:45.410Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="六、使用Hystrix实现微服务的容错处理">
+<meta name="twitter:description" content="应用容错三板斧 超时机制超时机制你懂的，配置一下超时时间，例如1秒——每次请求在1秒内必须返回，否则到点就把线程掐死，释放资源！思路：一旦超时，就释放资源。由于释放资源速度较快，应用就不会那么容易被拖死。  舱壁模式软件世界里的仓壁模式可以这样理解：M类使用线程池1，N类使用线程池2，彼此的线程池不同，并且为每个类分配的线程池较小，例如coreSize=10。举个例子：M类调用B服务，N类调用C服">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/17/六、使用Hystrix实现微服务的容错处理/hystrix-status-trans.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/17/六、使用Hystrix实现微服务的容错处理/">
+
+
+
+
+
+  <title>六、使用Hystrix实现微服务的容错处理 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/17/六、使用Hystrix实现微服务的容错处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">六、使用Hystrix实现微服务的容错处理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-17T10:03:51+08:00">
+                2019-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Cloud-微服务架构实战/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Cloud 微服务架构实战</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="应用容错三板斧"><a href="#应用容错三板斧" class="headerlink" title="应用容错三板斧"></a>应用容错三板斧</h3><ol>
+<li><p>超时机制<br>超时机制你懂的，配置一下超时时间，例如1秒——每次请求在1秒内必须返回，否则到点就把线程掐死，释放资源！<br>思路：一旦超时，就释放资源。由于释放资源速度较快，应用就不会那么容易被拖死。</p>
+</li>
+<li><p>舱壁模式<br>软件世界里的仓壁模式可以这样理解：M类使用线程池1，N类使用线程池2，彼此的线程池不同，并且为每个类分配的线程池较小，例如coreSize=10。举个例子：M类调用B服务，N类调用C服务，如果M类和N类使用相同的线程池，那么如果B服务挂了，M类调用B服务的接口并发又很高，你又没有任何保护措施，你的服务就很可能被M类拖死。而如果M类有自己的线程池，N类也有自己的线程池，如果B服务挂了，M类顶多是将自己的线程池占满，不会影响N类的线程池——于是N类依然能正常工作，<br>思路：不把鸡蛋放在一个篮子里。你有你的线程池，我有我的线程池，你的线程池满了和我没关系，你挂了也和我没关系。</p>
+</li>
+<li><p>断路器<br>现实世界的断路器大家肯定都很了解，每个人家里都会有断路器。断路器实时监控电路的情况，如果发现电路电流异常，就会跳闸，从而防止电路被烧毁。<br>软件世界的断路器可以这样理解：实时监测应用，如果发现在一定时间内失败次数/失败率达到一定阈值，就“跳闸”，断路器打开——此时，请求直接返回，而不去调用原本调用的逻辑。<br>跳闸一段时间后（例如15秒），断路器会进入半开状态，这是一个瞬间态，此时允许一次请求调用该调的逻辑，如果成功，则断路器关闭，应用正常调用；如果调用依然不成功，断路器继续回到打开状态，过段时间再进入半开状态尝试——通过”跳闸“，应用可以保护自己，而且避免浪费资源；而通过半开的设计，可实现应用的”自我修复“。</p>
+</li>
+</ol>
+<a id="more"></a>
+<p><img src="/2019/05/17/六、使用Hystrix实现微服务的容错处理/hystrix-status-trans.png" alt="断路器状态转换图"></p>
+<h3 id="使用-Hystrix-实现容错"><a href="#使用-Hystrix-实现容错" class="headerlink" title="使用 Hystrix 实现容错"></a>使用 Hystrix 实现容错</h3><h4 id="Hystrix-简介"><a href="#Hystrix-简介" class="headerlink" title="Hystrix 简介"></a>Hystrix 简介</h4><p>Hystrix是由Netflix开源的一个延迟和容错库，用于隔离访问远程系统、服务或者第三方库，防止级联失败，从而提升系统的可用性与容错性。Hystrix主要通过以下几点实现延迟和容错。</p>
+<ul>
+<li>包裹请求：使用HystrixCommand（或HystrixObservableCommand）包裹对依赖的调用逻辑，每个命令在独立线程中执行。这使用到了设计模式中的“命令模式”。</li>
+<li>跳闸机制：当某服务的错误率超过一定阈值时，Hystrix可以自动或者手动跳闸，停止请求该服务一段时间。</li>
+<li>资源隔离：Hystrix为每个依赖都维护了一个小型的线程池（或者信号量）。如果该线程池已满，发往该依赖的请求就被立即拒绝，而不是排队等候，从而加速失败判定。</li>
+<li>监控：Hystrix可以近乎实时地监控运行指标和配置的变化，例如成功、失败、超时、以及被拒绝的请求等。</li>
+<li>回退机制：当请求失败、超时、被拒绝，或当断路器打开时，执行回退逻辑。回退逻辑可由开发人员自行提供，例如返回一个缺省值。</li>
+<li>自我修复：断路器打开一段时间后，会自动进入“半开”状态。断路器打开、关闭、半开的逻辑转换，前面我们已经详细探讨过了，不再赘述。</li>
+</ul>
+<h3 id="通用方式整合Hystrix"><a href="#通用方式整合Hystrix" class="headerlink" title="通用方式整合Hystrix"></a>通用方式整合Hystrix</h3><ol>
+<li>引入相关依赖</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>在启动类上添加注解@EnableCircuitBreaker 或 @EnableHystrix</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableCircuitBreaker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerMovieApplication</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    SpringApplication.run(ConsumerMovieApplication.class, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>修改 Controller，让其中的 findById 方法具备容错能力</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MovieController</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(MovieController.class);</span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> RestTemplate restTemplate;</span><br><span class="line">  <span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"findByIdFallback"</span>,</span><br><span class="line">      commandProperties = &#123;</span><br><span class="line">      <span class="meta">@HystrixProperty</span>(name = <span class="string">"execution.isolation.thread.timeoutInMilliseconds"</span>, value = <span class="string">"5000"</span>),</span><br><span class="line">      <span class="meta">@HystrixProperty</span>(name = <span class="string">"metrics.rollingStats.timeInMilliseconds"</span>, value = <span class="string">"10000"</span>)&#125;,</span><br><span class="line">      threadPoolProperties = &#123;</span><br><span class="line">      <span class="meta">@HystrixProperty</span>(name = <span class="string">"coreSize"</span>, value = <span class="string">"1"</span>),</span><br><span class="line">      <span class="meta">@HystrixProperty</span>(name = <span class="string">"maxQueueSize"</span>, value = <span class="string">"10"</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/user/&#123;id&#125;"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">findById</span><span class="params">(@PathVariable Long id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.restTemplate.getForObject(<span class="string">"http://microservice-provider-user/"</span> + id, User.class);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">findByIdFallback</span><span class="params">(Long id, Throwable throwable)</span> </span>&#123;</span><br><span class="line">    LOGGER.error(<span class="string">"进入回退方法，异常："</span>, throwable);</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    user.setId(-<span class="number">1L</span>);</span><br><span class="line">    user.setName(<span class="string">"默认用户"</span>);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>为findById 方法编写了一个回退方法 findByIdFallback， 该方法与findById 方法具有相同的参数与返回值类型。<br>在findById 方法上，使用注解 @HystrixCommand 的fallbackMethod 属性，指定回退方法 findByIdFallback。@HystrixCommand 的配置非常灵活， 可使用注解@HystrixProperty 的commandProperties 属性来配置@HystrixCommand。如上<br>如需获得导致fallback 的原因，只需在fallback 方法上添加Throwable  参数即可。<br>详细理解注解@HystrixCommand 可前往  <a href="https://github.com/Netflix/Hystrix/tree/master/hystrix-contrib/hystrix-javanica#configuration" target="_blank" rel="noopener">https://github.com/Netflix/Hystrix/tree/master/hystrix-contrib/hystrix-javanica#configuration</a><br>Hystrix 配置属性可详见 Hystrix Wiki ( <a href="https://github.com/Netflix/Hystrix/wiki/Configuration" target="_blank" rel="noopener">https://github.com/Netflix/Hystrix/wiki/Configuration</a>)</p>
+<h3 id="Feign-使用Hystrix"><a href="#Feign-使用Hystrix" class="headerlink" title="Feign 使用Hystrix"></a>Feign 使用Hystrix</h3><p>Spring Cloud 默认已为 Feign 整合了 Hystrix，要想为Feign 打开Hystrix 支持，只需设置feign.hystrix.enable=true。</p>
+<ol>
+<li>在 application.yml 中添加feign.hystrix.enable=true</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">feign:</span><br><span class="line">  hystrix:</span><br><span class="line">    enabled: true</span><br><span class="line"># 说明：请务必注意，从Spring Cloud Dalston开始，Feign默认是不开启Hystrix的。</span><br><span class="line"># 因此，如使用Dalston请务必额外设置属性：feign.hystrix.enabled=true，否则断路器不会生效。</span><br><span class="line"># 而，Spring Cloud Angel/Brixton/Camden中，Feign默认都是开启Hystrix的。无需设置该属性。</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>编写Feign 回退类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 回退类FeignClientFallback需实现Feign Client接口</span></span><br><span class="line"><span class="comment">* FeignClientFallback也可以是public class，没有区别</span></span><br><span class="line"><span class="comment">* <span class="doctag">@author</span> 周立</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FeignClientFallback</span> <span class="keyword">implements</span> <span class="title">UserFeignClient</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">findById</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    user.setId(-<span class="number">1L</span>);</span><br><span class="line">    user.setUsername(<span class="string">"默认用户"</span>);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>修改Feign 接口，通过@FeignClient注解的 fallback 属性，为指定名称的Feign 客户端添加回退。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"microservice-provider-user"</span>, fallback = FeignClientFallback.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserFeignClient</span> </span>&#123;</span><br><span class="line">  <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.GET)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">findById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>通过 Fallback Factory 检查回退原因<br>对于Feign 获取回退原因，可使用注解 @FeignClient 的 fallbackFactory 属性。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* UserFeignClient的fallbackFactory类，该类需实现FallbackFactory接口，并覆写create方法</span></span><br><span class="line"><span class="comment">* The fallback factory must produce instances of fallback classes that</span></span><br><span class="line"><span class="comment">* implement the interface annotated by &#123;<span class="doctag">@link</span> FeignClient&#125;.</span></span><br><span class="line"><span class="comment">* <span class="doctag">@author</span> 周立</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FeignClientFallbackFactory</span> <span class="keyword">implements</span> <span class="title">FallbackFactory</span>&lt;<span class="title">UserFeignClient</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(FeignClientFallbackFactory.class);</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> UserFeignClient <span class="title">create</span><span class="params">(Throwable cause)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> UserFeignClient() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> User <span class="title">findById</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 日志最好放在各个fallback方法中，而不要直接放在create方法中。</span></span><br><span class="line">        <span class="comment">// 否则在引用启动时，就会打印该日志。</span></span><br><span class="line">        <span class="comment">// 详见https://github.com/spring-cloud/spring-cloud-netflix/issues/1471</span></span><br><span class="line">        FeignClientFallbackFactory.LOGGER.info(<span class="string">"fallback; reason was:"</span>, cause);</span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        user.setId(-<span class="number">1L</span>);</span><br><span class="line">        user.setUsername(<span class="string">"默认用户"</span>);</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Hystrix-线程隔离策略与传播上下文"><a href="#Hystrix-线程隔离策略与传播上下文" class="headerlink" title="Hystrix 线程隔离策略与传播上下文"></a>Hystrix 线程隔离策略与传播上下文</h3><p>Hystrix 的隔离策略有两种：分别是线程隔离和信号量隔离。</p>
+<ol>
+<li>THREAD（线程隔离）：使用该方法，HystrixCommand 将在调用线程上执行，并发请求受到线程池中的线程数量的限制。</li>
+<li>SEMAPHORE（信号量隔离）：使用该方法，HystrixCommand 将在调用线程上执行，开销相对较小，并发请求受到信号量个数的限制。</li>
+</ol>
+<p>Hystrix 中默认并推荐使用线程隔离（THREAD），因为这种方式有一个除网络超时以外的额外保护壳。<br>一般来说，只有当调用负载非常高时（例如每个实例每秒调用数百次）才需要使用信号量隔离，因为在这种场景下使用THREAD　开销会比较高。信号量隔离一般仅适用于非网络调用的隔离。<br>可使用 execution.isolation.strategy 属性指定隔离策略。</p>
+<h3 id="Hystrix-的监控"><a href="#Hystrix-的监控" class="headerlink" title="Hystrix 的监控"></a>Hystrix 的监控</h3><ol>
+<li>使用/hystrix.stream 端点监控Hystrix</li>
+<li>使用 Hystrix Dashboard 可视化监控数据</li>
+<li>使用 Turbine 聚合监控数据</li>
+</ol>
+<p>详细内容自行百度</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/16/五、使用Feign实现声明式REST调用/" rel="next" title="五、使用Feign实现声明式REST调用">
+                <i class="fa fa-chevron-left"></i> 五、使用Feign实现声明式REST调用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/20/七、使用Zuul构建微服务网关/" rel="prev" title="七、使用Zuul构建微服务网关">
+                七、使用Zuul构建微服务网关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用容错三板斧"><span class="nav-number">1.</span> <span class="nav-text">应用容错三板斧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Hystrix-实现容错"><span class="nav-number">2.</span> <span class="nav-text">使用 Hystrix 实现容错</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hystrix-简介"><span class="nav-number">2.1.</span> <span class="nav-text">Hystrix 简介</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通用方式整合Hystrix"><span class="nav-number">3.</span> <span class="nav-text">通用方式整合Hystrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Feign-使用Hystrix"><span class="nav-number">4.</span> <span class="nav-text">Feign 使用Hystrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hystrix-线程隔离策略与传播上下文"><span class="nav-number">5.</span> <span class="nav-text">Hystrix 线程隔离策略与传播上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hystrix-的监控"><span class="nav-number">6.</span> <span class="nav-text">Hystrix 的监控</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>
