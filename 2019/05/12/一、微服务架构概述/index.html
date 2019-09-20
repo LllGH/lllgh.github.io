@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Lll Blog">
 <meta property="og:description" content="微服务架构概述微服务架构风格是一种将一个单一应用程序开发为一组小型服务的方法，每个服务运行在自己的进程中，服务间通信采用轻量级通信机制（通常用HTTP资源API）。这些服务围绕业务能力构建并且可通过全自动部署机制独立部署。这些服务共用一个最小型的集中式的管理，服务可用不同的语言开发，使用不同的数据存储技术。从中可以看出，微服务应具备以下特性：    1.每个微服务可独立运行在自己的进程里。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-20T02:37:25.632Z">
+<meta property="og:updated_time" content="2019-09-20T02:53:13.913Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一、微服务架构概述">
 <meta name="twitter:description" content="微服务架构概述微服务架构风格是一种将一个单一应用程序开发为一组小型服务的方法，每个服务运行在自己的进程中，服务间通信采用轻量级通信机制（通常用HTTP资源API）。这些服务围绕业务能力构建并且可通过全自动部署机制独立部署。这些服务共用一个最小型的集中式的管理，服务可用不同的语言开发，使用不同的数据存储技术。从中可以看出，微服务应具备以下特性：    1.每个微服务可独立运行在自己的进程里。">
@@ -348,7 +348,7 @@
 <h3 id="微服务架构的优点"><a href="#微服务架构的优点" class="headerlink" title="微服务架构的优点"></a>微服务架构的优点</h3><p>1.易于开发和维护。<br>2.单个微服务启动较快。<br>3.局部修改容易部署。<br>4.技术栈不受限：可以结合项目业务和团队特点，合理地选择技术栈。<br>5.按需伸缩：可根据需求实现细粒度的扩展。</p>
 <h3 id="微服务架构面临的挑战"><a href="#微服务架构面临的挑战" class="headerlink" title="微服务架构面临的挑战"></a>微服务架构面临的挑战</h3><p>1.运维要求高。<br>2.分布式固有的复杂性：系统容错、网络延迟、分布式事务等都会带来巨大的挑战。<br>3.接口调整成本高：微服务之间通过接口进行通信，如果修改某一个微服务的API，所有使用了该接口的微服务都需要做调整。<br>4.重复劳动：很多服务可能都会使用到的相同功能，这部分代码可能导致代码重复。（可以通过共享库解决，但共享库在多语言环境下就不一定行得通了）。</p>
 <h3 id="微服务设计原则"><a href="#微服务设计原则" class="headerlink" title="微服务设计原则"></a>微服务设计原则</h3><p>1.单一职责原则：只用关注整个系统中单独、有界限地一部分。【1】<br>2.服务自治原则：每个微服务应具备独立地业务能力、依赖与运行环境。<br>3.轻量级通信机制：首先，体量较轻；其次，它应该是跨语言，跨平台地。<br>4.微服务粒度：应当使用合理得粒度划分微服务，而不是一味地把服务做小。</p>
-<p>【1】：SOLID原则之一，相关网址：<a href="https://en.wikipedia.org/wiki/SOLID" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/SOLID</a></p>
+<p>【1】：SOLID原则之一</p>
 
       
     </div>
@@ -458,7 +458,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -475,15 +475,6 @@
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
             
 
           </nav>
