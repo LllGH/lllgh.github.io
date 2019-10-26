@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="极客时间笔记,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="微服务架构概述微服务架构风格是一种将一个单一应用程序开发为一组小型服务的方法，每个服务运行在自己的进程中，服务间通信采用轻量级通信机制（通常用HTTP资源API）。这些服务围绕业务能力构建并且可通过全自动部署机制独立部署。这些服务共用一个最小型的集中式的管理，服务可用不同的语言开发，使用不同的数据存储技术。从中可以看出，微服务应具备以下特性：  每个微服务可独立运行在自己的进程里。 一系列独立运行">
-<meta name="keywords" content="闲着没事总得干点什么。">
+<meta name="description" content="该内容被加密了, 请输入密码查看.">
+<meta name="keywords" content="极客时间笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一、微服务架构概述">
-<meta property="og:url" content="http://yoursite.com/2019/05/12/一、微服务架构概述/index.html">
+<meta property="og:title" content="如何优化多线程上下文切换">
+<meta property="og:url" content="http://yoursite.com/2019/09/27/如何优化多线程上下文切换/index.html">
 <meta property="og:site_name" content="Lll Blog">
-<meta property="og:description" content="微服务架构概述微服务架构风格是一种将一个单一应用程序开发为一组小型服务的方法，每个服务运行在自己的进程中，服务间通信采用轻量级通信机制（通常用HTTP资源API）。这些服务围绕业务能力构建并且可通过全自动部署机制独立部署。这些服务共用一个最小型的集中式的管理，服务可用不同的语言开发，使用不同的数据存储技术。从中可以看出，微服务应具备以下特性：  每个微服务可独立运行在自己的进程里。 一系列独立运行">
+<meta property="og:description" content="该内容被加密了, 请输入密码查看.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-26T01:50:07.496Z">
+<meta property="og:updated_time" content="2019-09-27T12:40:24.703Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一、微服务架构概述">
-<meta name="twitter:description" content="微服务架构概述微服务架构风格是一种将一个单一应用程序开发为一组小型服务的方法，每个服务运行在自己的进程中，服务间通信采用轻量级通信机制（通常用HTTP资源API）。这些服务围绕业务能力构建并且可通过全自动部署机制独立部署。这些服务共用一个最小型的集中式的管理，服务可用不同的语言开发，使用不同的数据存储技术。从中可以看出，微服务应具备以下特性：  每个微服务可独立运行在自己的进程里。 一系列独立运行">
+<meta name="twitter:title" content="如何优化多线程上下文切换">
+<meta name="twitter:description" content="该内容被加密了, 请输入密码查看.">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/05/12/一、微服务架构概述/">
+  <link rel="canonical" href="http://yoursite.com/2019/09/27/如何优化多线程上下文切换/">
 
 
 
 
 
-  <title>一、微服务架构概述 | Lll Blog</title>
+  <title>如何优化多线程上下文切换 | Lll Blog</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/一、微服务架构概述/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/27/如何优化多线程上下文切换/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="紫苏">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">一、微服务架构概述</h1>
+          <h1 class="post-title" itemprop="name headline">如何优化多线程上下文切换</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-12T07:02:57+08:00">
-                2019-05-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-27T19:40:01+08:00">
+                2019-09-27
               </time>
             
 
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring-Cloud-微服务架构实战/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Cloud 微服务架构实战</span>
+                  <a href="/categories/多线程性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">多线程性能优化</span>
                   </a>
                 </span>
 
@@ -342,45 +342,7 @@
       
 
       
-        <h3 id="微服务架构概述"><a href="#微服务架构概述" class="headerlink" title="微服务架构概述"></a>微服务架构概述</h3><p>微服务架构风格是一种将一个单一应用程序开发为一组小型服务的方法，每个服务运行在自己的进程中，服务间通信采用轻量级通信机制（通常用HTTP资源API）。这些服务围绕业务能力构建并且可通过全自动部署机制独立部署。这些服务共用一个最小型的集中式的管理，服务可用不同的语言开发，使用不同的数据存储技术。从中可以看出，微服务应具备以下特性：</p>
-<ol>
-<li>每个微服务可独立运行在自己的进程里。</li>
-<li>一系列独立运行的微服务共同构建起整个系统。</li>
-<li>每个微服务为独立的业务开发，一个微服务只关注某个特定的功能。</li>
-<li>微服务之间通过一些轻量的通信机制进行通信，例如通过RESTful API进行调用。</li>
-<li>可以使用不同的语言与数据存储技术。</li>
-<li>全自动的部署机制。</li>
-</ol>
-<a id="more"></a>
-<h3 id="单体应用存在的问题"><a href="#单体应用存在的问题" class="headerlink" title="单体应用存在的问题"></a>单体应用存在的问题</h3><ol>
-<li>复杂性高：整个项目包含的模块多，模块的边界模糊，依赖关系不清晰，代码质量参差不齐混乱的堆砌在一起，整个项目非常复杂。</li>
-<li>技术债务：随着时间推移、需求变更和人员更迭，以使用的系统设计或代码难以被修改。</li>
-<li>部署频率低：随着代码的增多，构建和部署的时间也会增加，每次都是全量部署，耗时长，影响范围大，风险高。</li>
-<li>可靠性差：某个应用Bug，可能会导致整个应用的崩溃。</li>
-<li>扩展能力受限：无法根据业务模块的需求进行伸缩。</li>
-<li>阻碍技术创新：团队中的每个成员都必须使用相同的开发语言和框架，要想引入新框架或新技术平台会非常困难。</li>
-</ol>
-<h3 id="微服务架构的优点"><a href="#微服务架构的优点" class="headerlink" title="微服务架构的优点"></a>微服务架构的优点</h3><ol>
-<li>易于开发和维护。</li>
-<li>单个微服务启动较快。</li>
-<li>局部修改容易部署。</li>
-<li>技术栈不受限：可以结合项目业务和团队特点，合理地选择技术栈。</li>
-<li>按需伸缩：可根据需求实现细粒度的扩展。</li>
-</ol>
-<h3 id="微服务架构面临的挑战"><a href="#微服务架构面临的挑战" class="headerlink" title="微服务架构面临的挑战"></a>微服务架构面临的挑战</h3><ol>
-<li>运维要求高。</li>
-<li>分布式固有的复杂性：系统容错、网络延迟、分布式事务等都会带来巨大的挑战。</li>
-<li>接口调整成本高：微服务之间通过接口进行通信，如果修改某一个微服务的API，所有使用了该接口的微服务都需要做调整。</li>
-<li>重复劳动：很多服务可能都会使用到的相同功能，这部分代码可能导致代码重复。（可以通过共享库解决，但共享库在多语言环境下就不一定行得通了）。</li>
-</ol>
-<h3 id="微服务设计原则"><a href="#微服务设计原则" class="headerlink" title="微服务设计原则"></a>微服务设计原则</h3><ol>
-<li>单一职责原则：只用关注整个系统中单独、有界限地一部分。【1】</li>
-<li>服务自治原则：每个微服务应具备独立地业务能力、依赖与运行环境。</li>
-<li>轻量级通信机制：首先，体量较轻；其次，它应该是跨语言，跨平台地。</li>
-<li>微服务粒度：应当使用合理得粒度划分微服务，而不是一味地把服务做小。</li>
-</ol>
-<p>【1】：SOLID原则之一</p>
-
+        <div id="hexo-blog-encrypt" data-wpm="密码错误，请重试！" data-whm="OOPS, these decrypted content may changed, but you can still have a look."><div class="hbe-input-container"><input type="password" id="hbePass" placeholder="您好, 请点击这里输入密码"><label>您好, 请点击这里输入密码</label><div class="bottom-line"></div></div><script id="hbeData" type="hbeData" data-hmacdigest="4eb76afae0879f8daeb577be7a1f7a9c227205015375d3f92fc2b246b4dbde49">84f19dbfa3b23f0773638704acdfdda6dec3eb66333198e910aa2f5ded23bb5f55db6a64d06fc8ebb53e74ec8b879e3872f6b52f6f1da6c9aea3fd0c5788b3b86a90dd1e42ea03fd877ba016481c8c48e21ae0a088dccfbbd8e184761a06ec27f7ad3fe432f2151149aed561b39406947c85e414802e360bff9b08e9d8ab57b5f52f8479830a0c0ea6fd6512bbd61627ef660f3bc2a33dd886046169706bd52bbd43b79daef71edc4e0b125218a05929013ee36d412437ebd01c2a5997e54f5042913b042fefb2ee61130418e55e40a53dc3060529d6d4256c3a4edc518a0ab15186d25d0447a8a7c28410f5acc9b1d7c277ba8687f5db3be9d1d078699a2fc4965069f3ccbb9013f3e6718d512420cbcc6b0afe057894249da7fac9dfa24087d81a6c0fb8b4ebd80297c128d86d73ed18ccc6de983ecc75500b08569addb6a8e81637f276143eab6fe8def61298480267468849948c61c21b185ec062d7b24a618f7193160930102d8e0c5fde325aceb3544bfbe6b1772157d178c5207e88cf6d3b9eabb6752b081c47e880db62a7fb68d499ed7eae7cb3bce6b35452af29f65e1416c2d36231bf24541585b55d18ee32b763f15346506960f90eb18482947f62775bec2b510ed1dd41a149baf97d99654e8a6168281b9a51006f7637812f5521a9fa56f8f93925435fb9754354f0b93eda123f235776420c6b7463fa36d5eab2aeacbce8393af85c4ee2dd257b0bb9664b3583da6f5e7174aac6b75ce12d4bd6f84d2207acbaa40591dfa11994366723b8286509427b01eb6fab5598beaa23c0db1e0ba2eb3808df1e6872a6dea77c7b8875f0613c22596364a0d1840041c894bfa35dca8fc9427a60cbc6cbebfa99ffd301e1a58d3e0617b484598cd2ee4e63eedec0c1e551465b9915612c98938a0c2ba86bb10128eaa6da936267eb81d07ae10f224cb4751d26c5886acdd1894eb38e81a5fbdc8a0258d0e073a8806ad709626f448a6b602e989a2d2e8b9201c7b41e45840954bd8e06b5b50b8c5e9736af1572e7edf0a87b1a38104348c5d92a88bb737e0ede9cb1786044f7b59440cebd69efed2564935e2d1559eaf08be6f666a66709c69c0c0ef00e4ba5cc20c1222a0920f68238ef58712126ccdf6cc9251e99ead31507554de086ed708f8a84c939f08b1d0a6fa561538e46437c6b94c70fae26d3ba40984869ad3f75d6e5cc09ff3e84ee14caafe67a48f4b08e2a016740c55dee05b882784d42f987d0d421b207e7640d2f761a50e96c3b95e715fc73faf7a091f432f133c2cc37e48fc56de0a7905026a1078f6d0126616ac764b99ad8fcbc75b1bc41dddb123dd78ae5b0d7266dfb60a24fae26dba721a70c4601615d7637386c69ec0a9946bc43db508f90df7cb69f4d9adde481b510caaa92a7d390a3c443f67449818a27ca06e027730fbffb9c615913cdd7aede4e190f0267103c9804ba1239046682ee2b1c323ba960398a67fb35ef31925c315c432e51105b9cdd2bb8814b6c0f2cb3f4cd7e7b634f21028a30b5d3278715dcb39fab952e1319b50efa8717f8092a2892658ed7e416595551d7b3738f2c3b630108d1477772635d774b9a35c157253b6215d056294b95283ae0220aaaf2d673f1e4ca3aa86500af005d14d75fe97c7fc30c660bdd1f0639ac2d094ef36881d354fbd4003292a1c89cea6d34859e125a2beea3b06247632be42000ac77ad36cfaca3ff7006b3a4b02e4b5c6b279c10c891751c3c957f63484b9321c7b9d5fa13c4de8c7a56033d56ba575d4615eb41f252e75d6fe85d9f6433917fadc3a3256b4bae1e4ec89ffb7b352b9695397293e139237fef3b42842574cf8585291d44f204faffe09e3c8d1310f190baf5f865bf574f814746fe709fc59bad2ead4ef4a99fe34c63c6e88b609b09b056fd045c150746c90d5fa8eea68deae4cafc631e877775b380fe0f2a927e80800fd96bafd05fa6c9bf0436ee847918bd9391d4a18b1e01cc961ffe3026480e9ee2d48d14677a668d03c200cfd2bf663372fd0e1d81452c2fa605da7dc86acffbc20f3aece8df5494b5383c519be80008c99522f46ef8015e05d8123a81a3c5872cf32e2a2a4d4299c3cbb4f51c329bc59416b31c51a7f8a8e030eabf6a23960939250867c0a8b5c0ccad256bf7cc5adb91c81d6450c25f7767a8851e39d07026d6eaa0382621ca75c057c7c19e363d48bd2861b6a6c57975691a89e0d7690d8b8fd0a9ac09c4f804098b6497edf375c5aab9b53f22ba04ed0ea8b8d21359ccf3b4e83dad8805989d1a8e53db1e125757b52ff630f9ea606b2665e9db4fb04553262326bd822e223cdeaced80e9a20879d68b07148987e480fe61c44337494ef6d8f7add9b23588f3ab77417ca2fda65756158a11db8c96aa5014df062b50c51a0f92847515d70ef6380d5e77ac0ae3416bda871b505e71e1baa257aad0d4970367d96a20e804addebc35c34b87c8b97c298e2f806355f3f00ff3b9f094bfe3b21b2647e3df284872dc62eb9eb38101499f0ca7c48f27481422408df1faf9aa4459fb08768ee17f37d1a0d8621612ac95dade9f1d416202c30b286a</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
       
     </div>
     
@@ -395,6 +357,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/极客时间笔记/" rel="tag"># 极客时间笔记</a>
+          
+        </div>
+      
 
       
       
@@ -404,15 +372,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/09/24/哪些操作导致了上下文切换/" rel="next" title="哪些操作导致了上下文切换">
+                <i class="fa fa-chevron-left"></i> 哪些操作导致了上下文切换
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/12/二、微服务开发框架-SpringCloud/" rel="prev" title="二、微服务开发框架--SpringCloud">
-                二、微服务开发框架--SpringCloud <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -464,17 +432,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -534,22 +493,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务架构概述"><span class="nav-number">1.</span> <span class="nav-text">微服务架构概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单体应用存在的问题"><span class="nav-number">2.</span> <span class="nav-text">单体应用存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务架构的优点"><span class="nav-number">3.</span> <span class="nav-text">微服务架构的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务架构面临的挑战"><span class="nav-number">4.</span> <span class="nav-text">微服务架构面临的挑战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务设计原则"><span class="nav-number">5.</span> <span class="nav-text">微服务设计原则</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
