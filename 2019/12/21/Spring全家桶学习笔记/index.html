@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Spring 全家桶学习笔记,">
 
 
 
@@ -79,14 +79,20 @@
 
 
 
-<meta name="keywords" content="闲着没事总得干点什么。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lll Blog">
-<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+<meta name="description" content="JDBC 必知必会SpringBoot 单数据源配置SpringBoot 多数据源配置数据库连接池 HikariCP 官网 SpringBoot 2.x 默认的数据库连接池 SpringBoot 1.x 默认数据库连接池使用 Tomcat 连接池 使用需要移除 tomcat-jdbc 依赖 配置 spirng.datasource.type=com.zaxxer.hikari.HikariData">
+<meta name="keywords" content="Spring 全家桶学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring全家桶学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/12/21/Spring全家桶学习笔记/index.html">
 <meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="JDBC 必知必会SpringBoot 单数据源配置SpringBoot 多数据源配置数据库连接池 HikariCP 官网 SpringBoot 2.x 默认的数据库连接池 SpringBoot 1.x 默认数据库连接池使用 Tomcat 连接池 使用需要移除 tomcat-jdbc 依赖 配置 spirng.datasource.type=com.zaxxer.hikari.HikariData">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/12/21/Spring全家桶学习笔记/1576991979354.jpg">
+<meta property="og:updated_time" content="2019-12-22T06:48:47.335Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lll Blog">
+<meta name="twitter:title" content="Spring全家桶学习笔记">
+<meta name="twitter:description" content="JDBC 必知必会SpringBoot 单数据源配置SpringBoot 多数据源配置数据库连接池 HikariCP 官网 SpringBoot 2.x 默认的数据库连接池 SpringBoot 1.x 默认数据库连接池使用 Tomcat 连接池 使用需要移除 tomcat-jdbc 依赖 配置 spirng.datasource.type=com.zaxxer.hikari.HikariData">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/21/Spring全家桶学习笔记/1576991979354.jpg">
 
 
 
@@ -116,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/3/">
+  <link rel="canonical" href="http://yoursite.com/2019/12/21/Spring全家桶学习笔记/">
 
 
 
 
 
-  <title>Lll Blog</title>
+  <title>Spring全家桶学习笔记 | Lll Blog</title>
   
 
 
@@ -141,8 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -235,440 +240,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/24/哪些操作导致了上下文切换/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="紫苏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lll Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/24/哪些操作导致了上下文切换/" itemprop="url">哪些操作导致了上下文切换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-24T22:10:43+08:00">
-                2019-09-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/多线程性能优化/" itemprop="url" rel="index">
-                    <span itemprop="name">多线程性能优化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          该内容被加密了, 请输入密码查看.
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/09/24/哪些操作导致了上下文切换/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/27/如何优化多线程上下文切换/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="紫苏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lll Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/27/如何优化多线程上下文切换/" itemprop="url">如何优化多线程上下文切换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-27T19:40:01+08:00">
-                2019-09-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/多线程性能优化/" itemprop="url" rel="index">
-                    <span itemprop="name">多线程性能优化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          该内容被加密了, 请输入密码查看.
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/09/27/如何优化多线程上下文切换/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/26/JDBC必知必会/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="紫苏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lll Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/26/JDBC必知必会/" itemprop="url">JDBC必知必会</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-26T11:33:08+08:00">
-                2019-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="SpringBoot-单数据源配置"><a href="#SpringBoot-单数据源配置" class="headerlink" title="SpringBoot 单数据源配置"></a>SpringBoot 单数据源配置</h3><h3 id="SpringBoot-多数据源配置"><a href="#SpringBoot-多数据源配置" class="headerlink" title="SpringBoot 多数据源配置"></a>SpringBoot 多数据源配置</h3><h3 id="连接池-HikariCP"><a href="#连接池-HikariCP" class="headerlink" title="连接池 HikariCP"></a>连接池 HikariCP</h3><p><img src="https://github.com/brettwooldridge/HikariCP" alt="官网"></p>
-<h4 id="HikariCP-为什么快"><a href="#HikariCP-为什么快" class="headerlink" title="HikariCP 为什么快"></a>HikariCP 为什么快</h4><ol>
-<li>字节码级别的优化（很多方法通过 JavaAssist 生成）</li>
-<li>大量小的改进</li>
-</ol>
-<h4 id="SpringBoot-中配置-HikariCP"><a href="#SpringBoot-中配置-HikariCP" class="headerlink" title="SpringBoot 中配置 HikariCP"></a>SpringBoot 中配置 HikariCP</h4><ul>
-<li>Spring Boot 2.x</li>
-</ul>
-<ol>
-<li>默认使用 HikariCP</li>
-<li>配置 spring.datasource.hikari.*</li>
-</ol>
-<ul>
-<li>Spring Boot 1.x</li>
-</ul>
-<ol>
-<li>默认使用 Tomcat 连接池，需要移除 tomcat-jdbc 依赖</li>
-<li>spirng.datasource.type=com.zaxxer.hikari.HikariDataSource</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hikari DataSource configuration.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(HikariDataSource.class)</span><br><span class="line"><span class="meta">@ConditionalOnMissingBean</span>(DataSource.class)</span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(name = <span class="string">"spring.datasource.type"</span>,</span><br><span class="line">		havingValue = <span class="string">"com.zaxxer.hikari.HikariDataSource"</span>, matchIfMissing = <span class="keyword">true</span>)</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Hikari</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.datasource.hikari"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> HikariDataSource <span class="title">dataSource</span><span class="params">(DataSourceProperties properties)</span> </span>&#123;</span><br><span class="line">		HikariDataSource dataSource = createDataSource(properties,</span><br><span class="line">				HikariDataSource.class);</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.hasText(properties.getName())) &#123;</span><br><span class="line">			dataSource.setPoolName(properties.getName());</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> dataSource;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="常用-HikariCP-配置参数"><a href="#常用-HikariCP-配置参数" class="headerlink" title="常用 HikariCP 配置参数"></a>常用 HikariCP 配置参数</h4><h3 id="Alibaba-Druid-数据库连接池"><a href="#Alibaba-Druid-数据库连接池" class="headerlink" title="Alibaba Druid 数据库连接池"></a>Alibaba Druid 数据库连接池</h3>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -698,9 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/21/Spring全家桶学习笔记/" itemprop="url">Spring全家桶学习笔记</a></h1>
+          <h1 class="post-title" itemprop="name headline">Spring全家桶学习笔记</h1>
         
 
         <div class="post-meta">
@@ -750,9 +322,7 @@
       
 
       
-        
-          
-            <h2 id="JDBC-必知必会"><a href="#JDBC-必知必会" class="headerlink" title="JDBC 必知必会"></a>JDBC 必知必会</h2><h3 id="SpringBoot-单数据源配置"><a href="#SpringBoot-单数据源配置" class="headerlink" title="SpringBoot 单数据源配置"></a>SpringBoot 单数据源配置</h3><h3 id="SpringBoot-多数据源配置"><a href="#SpringBoot-多数据源配置" class="headerlink" title="SpringBoot 多数据源配置"></a>SpringBoot 多数据源配置</h3><h3 id="数据库连接池-HikariCP-官网"><a href="#数据库连接池-HikariCP-官网" class="headerlink" title="数据库连接池 HikariCP 官网"></a>数据库连接池 HikariCP <a href="https://github.com/brettwooldridge/HikariCP" target="_blank" rel="noopener">官网</a></h3><ol>
+        <h2 id="JDBC-必知必会"><a href="#JDBC-必知必会" class="headerlink" title="JDBC 必知必会"></a>JDBC 必知必会</h2><h3 id="SpringBoot-单数据源配置"><a href="#SpringBoot-单数据源配置" class="headerlink" title="SpringBoot 单数据源配置"></a>SpringBoot 单数据源配置</h3><h3 id="SpringBoot-多数据源配置"><a href="#SpringBoot-多数据源配置" class="headerlink" title="SpringBoot 多数据源配置"></a>SpringBoot 多数据源配置</h3><h3 id="数据库连接池-HikariCP-官网"><a href="#数据库连接池-HikariCP-官网" class="headerlink" title="数据库连接池 HikariCP 官网"></a>数据库连接池 HikariCP <a href="https://github.com/brettwooldridge/HikariCP" target="_blank" rel="noopener">官网</a></h3><ol>
 <li>SpringBoot 2.x 默认的数据库连接池</li>
 <li>SpringBoot 1.x 默认数据库连接池使用 Tomcat 连接池<ul>
 <li>使用需要移除 tomcat-jdbc 依赖</li>
@@ -993,8 +563,6 @@
 </li>
 </ol>
 
-          
-        
       
     </div>
     
@@ -1009,14 +577,36 @@
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-全家桶学习笔记/" rel="tag"># Spring 全家桶学习笔记</a>
+          
+        </div>
       
 
       
+      
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/26/JDBC必知必会/" rel="next" title="JDBC必知必会">
+                <i class="fa fa-chevron-left"></i> JDBC必知必会
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </div>
@@ -1026,14 +616,11 @@
   </article>
 
 
-    
-  </section>
 
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-  </nav>
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -1041,6 +628,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -1061,8 +652,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1122,6 +722,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDBC-必知必会"><span class="nav-number">1.</span> <span class="nav-text">JDBC 必知必会</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBoot-单数据源配置"><span class="nav-number">1.1.</span> <span class="nav-text">SpringBoot 单数据源配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBoot-多数据源配置"><span class="nav-number">1.2.</span> <span class="nav-text">SpringBoot 多数据源配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库连接池-HikariCP-官网"><span class="nav-number">1.3.</span> <span class="nav-text">数据库连接池 HikariCP 官网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库连接池-Alibaba-Druid"><span class="nav-number">1.4.</span> <span class="nav-text">数据库连接池 Alibaba Druid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-JDBC-访问数据库"><span class="nav-number">1.5.</span> <span class="nav-text">Spring JDBC 访问数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-的事务抽象"><span class="nav-number">1.6.</span> <span class="nav-text">Spring 的事务抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编程式事务"><span class="nav-number">1.7.</span> <span class="nav-text">编程式事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#声明式事务"><span class="nav-number">1.8.</span> <span class="nav-text">声明式事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC-异常抽象"><span class="nav-number">1.9.</span> <span class="nav-text">JDBC 异常抽象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#O-R-Mapping-实践"><span class="nav-number">2.</span> <span class="nav-text">O/R Mapping 实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-Persistence-API"><span class="nav-number">2.1.</span> <span class="nav-text">Java Persistence API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Data"><span class="nav-number">2.2.</span> <span class="nav-text">Spring Data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hiberate"><span class="nav-number">2.3.</span> <span class="nav-text">Hiberate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis"><span class="nav-number">2.4.</span> <span class="nav-text">Mybatis</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-缓存抽象"><span class="nav-number">3.</span> <span class="nav-text">Spring 缓存抽象</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1255,6 +871,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
