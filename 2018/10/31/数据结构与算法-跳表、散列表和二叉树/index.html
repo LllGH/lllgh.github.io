@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据结构与算法,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="跳表（SkipList）对于一个有序链表，要想在其中查找某个值，我们需要从头到尾遍历链表，这样查找效率就会很低，时间复杂度高，是O(n)。为了提高查询效率，我们在链表之上建立多层索引。每隔几个结点向上抽取一层，建立索引层。提高效率。这种链表加多级索引的结构，就是跳表。可以支持快速的插入、删除、查找操作。数据结构如下图所示。">
+<meta name="keywords" content="数据结构与算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法-跳表、散列表和二叉树">
+<meta property="og:url" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="跳表（SkipList）对于一个有序链表，要想在其中查找某个值，我们需要从头到尾遍历链表，这样查找效率就会很低，时间复杂度高，是O(n)。为了提高查询效率，我们在链表之上建立多层索引。每隔几个结点向上抽取一层，建立索引层。提高效率。这种链表加多级索引的结构，就是跳表。可以支持快速的插入、删除、查找操作。数据结构如下图所示。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/492206afe5e2fef9f683c7cff83afa65.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/220043e683ea33b9912425ef759556ae.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/50f89510ad1f7570791dd12f4e9adeb4.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/12cd11b2432ed7c4dfc9a2053cb70b8e.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/14eaa820cb89a17a7303e8847a412330.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/903ee0dcb62bce2f5b47819541f9069a.jpg">
+<meta property="og:updated_time" content="2020-12-28T03:20:06.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构与算法-跳表、散列表和二叉树">
+<meta name="twitter:description" content="跳表（SkipList）对于一个有序链表，要想在其中查找某个值，我们需要从头到尾遍历链表，这样查找效率就会很低，时间复杂度高，是O(n)。为了提高查询效率，我们在链表之上建立多层索引。每隔几个结点向上抽取一层，建立索引层。提高效率。这种链表加多级索引的结构，就是跳表。可以支持快速的插入、删除、查找操作。数据结构如下图所示。">
+<meta name="twitter:image" content="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/492206afe5e2fef9f683c7cff83afa65.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/">
+
+
+
+
+
+  <title>数据结构与算法-跳表、散列表和二叉树 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/31/数据结构与算法-跳表、散列表和二叉树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据结构与算法-跳表、散列表和二叉树</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T16:26:12+08:00">
+                2018-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="跳表（SkipList）"><a href="#跳表（SkipList）" class="headerlink" title="跳表（SkipList）"></a>跳表（SkipList）</h3><p>对于一个有序链表，要想在其中查找某个值，我们需要从头到尾遍历链表，这样查找效率就会很低，时间复杂度高，是O(n)。为了提高查询效率，我们在链表之上建立多层索引。每隔几个结点向上抽取一层，建立索引层。提高效率。这种链表加多级索引的结构，就是跳表。可以支持快速的插入、删除、查找操作。数据结构如下图所示。<br><img src="/2018/10/31/数据结构与算法-跳表、散列表和二叉树/492206afe5e2fef9f683c7cff83afa65.jpg" alt></p>
+<a id="more"></a>
+<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><ul>
+<li>查找时间复杂度：在跳表中查找数据时，首先在最高层索引中查找，缩小查找范围，再向下级索引查找，依次类推，直到找到要查询的数据。假设数据规模为 n，每隔 m 个结点构建索引，最高级的索引有 m 个结点，索引共有 h 级 。可以得到 n / m<sup>h</sup> = m，从而求得 h = log<sub>m</sub>n - 1。如果包含原始链表这一层，整个跳表的高度就是 log<sub>m</sub>n。我们在跳表中查询某个数据时，如果每层都要遍历 m 个 结点，则查询的时间复杂度就是 O(m * log<sub>m</sub>n)。省去常量则为 O(logn)。</li>
+<li>插入、删除时间复杂度：链表中插入、删除的时间复杂度都为O(1)，但每次插入、删除我们都需要查找数据结点，所以插入、删除的时间复杂度也为O(logn)。</li>
+</ul>
+<h4 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h4><ul>
+<li>空间复杂度：比起单纯的单链表，跳表需要存储多级索引，消耗更多的存储空间。假设原始链表大小为 n,每 2 个结点建立索引。那第一级索引大约有 n/2 个结点，第二级大约有 n/4 个结点，以此类推，每上升一级就减少一半，直到剩下两个结点。把每层索引的结点数加起来就是一个等比数列。<br>n/2 + n/4 + n/ 8 + … + 8 + 4 + 2 = n - 2。即需要额外再用接近 n 个结点的存储空间来存储索引。所以跳表的空间复杂度是 O(n)。</li>
+</ul>
+<p>以上是每两个结点抽取一个结点建立索引层，也可以每 3 个 或 5 个抽取一个结点。这样可以大幅减少索引层结点占据的空间。但空间复杂度依然是 O(n)。</p>
+<h4 id="跳表索引动态更新"><a href="#跳表索引动态更新" class="headerlink" title="跳表索引动态更新"></a>跳表索引动态更新</h4><p>当不停的往跳表中插入数据时，如果不更新索引，就有可能出现某两个索引结点之间数据非常多的情况，极端情况下，跳表还会退化成单链表。因此，作为一种动态数据结构，我们需要某种手段来维护索引与原始链表大小之间的平衡。避免复杂度退化，以及查找、插入、删除操作性能下降。</p>
+<p>跳表通过随机函数来维护它的平衡性。当我们往跳表中插入数据的时候，我们可以可以选择同时将这个数据插入到部分索引层中。我们通过一个随机函数，来决定将这个结点插入到哪几级索引中，比如随机函数生成了值 K，那就将这个结点添加到第一级到第 K 级这 K 级索引中。随机函数要能够保证跳表的索引大小和数据大小平衡性，不至于性能过度退化。</p>
+<p>详细了解跳表这种数据结构，推荐这篇文章。<a href="https://juejin.cn/post/6844903446475177998" target="_blank" rel="noopener">点击这里</a>。</p>
+<h3 id="散列表（HashTable）"><a href="#散列表（HashTable）" class="headerlink" title="散列表（HashTable）"></a>散列表（HashTable）</h3><p>散列表也叫“哈希表”或“Hash 表”，是根据关键码值(Key value)而直接进行访问的数据结构。它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。散列表用的是数组支持按照下标随机访问数据，时间复杂度为 O(1)的特性，将关键码值(key)通过散列函数（或“Hash函数”、“哈希函数”）映射为数组的下标，将数据存储在该下标对应的位置。散列函数计算得到值叫散列值（或“Hash值”、“哈希值”）。</p>
+<h4 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h4><p>散列函数在散列表中起着非常关键的作用。通常把它定义成 hash(key)，其中 key 表示元素的键值，hash(key) 的值表示经过散列函数计算得到的散列值。</p>
+<p>散列函数设计的基本要求：</p>
+<ol>
+<li>散列函数计算得到的散列值是一个非负整数。</li>
+<li>如果 key1 == key2，那么 hash(key1) == hash(key2)。</li>
+<li>如果 key1 != key2，那么 hash(key1) != hash(key2)。</li>
+</ol>
+<p>针对第三点，看起来合情合理，但是在真实的情况下，要想实现一个不同的 key 对应的散列值都不一样的散列函数几乎是不可能的。因为 key 的可能性是无限的，而通过散列函数得到的散列值却是有限的。所以再好的哈希算法，也无法避免这种情况。我们把这种 key1 != key2，而 hash(key1) == hash(key2) 的情况叫做散列冲突（或“哈希碰撞”）。</p>
+<h4 id="散列冲突"><a href="#散列冲突" class="headerlink" title="散列冲突"></a>散列冲突</h4><p>再好的散列函数也无法避免散列冲突。常用的散列冲突解决方法有两类，开放寻址法（open addressing）和链表法（chaining）。</p>
+<h5 id="开放寻址法"><a href="#开放寻址法" class="headerlink" title="开放寻址法"></a>开放寻址法</h5><p>开放寻址法的核心思想是，如果出现了散列冲突，就重新探测一个空闲位置，将其插入。</p>
+<ol>
+<li>线性探测（Linear Probing)</li>
+</ol>
+<ul>
+<li>当往散列表中插入数据时，如果某个数据经过散列函数散列之后，存储位置已经被占用了，就从当前位置开始，依次往后查找，看是否有空闲位置，遍历到尾部都没有找到空闲的位置，则再从表头开始找，直到找到为止。</li>
+<li>当在散列表中查找数据时，通过散列函数求出要查找元素的键值对应的散列值，然后比较数组中下标为散列值的元素和要查找的元素。如果相等，则说明就是我们要找的元素；否则就顺序往后依次查找。如果遍历到数组中的空闲位置，还没有找到，就说明要查找的元素并没有在散列表中。</li>
+<li>当在散列表中删除数据时，不能单纯地把要删除的元素设置为空，因为在上述查找方法中，通过线性探测方法，在找到一个空闲位置时，就认定散列表中不存在这个数据。但是，如果这个空闲位置是后来删除的，就会导致原来的查找算法失效。因此，可以将删除的元素，特殊标记为 deleted。当线性探测查找的时候，遇到标记为 deleted 的空间，并不是停下来，而是继续往下探测。</li>
+</ul>
+<ol start="2">
+<li><p>二次探测（Quadratic probing）<br>二次探测，跟线性探测很像，线性探测每次探测的步长是 1，那它探测的下标序列就是 hash(key) + 0，hash(key) + 1，hash(key) + 2 …… 。而二次探测探测的步长就变成了原来的“二次方”，也就是说，它探测的下标序列就是 hash(key) + 0，hash(key) + 1<sup>2</sup>，hash(key)+2<sup>2</sup>……。</p>
+</li>
+<li><p>双重散列（Double hashing）<br>双重散列，意思就是不仅要使用一个散列函数。而是使用一组散列函数 hash1(key)，hash2(key)，hash3(key) …… 我们先用第一个散列函数，如果计算得到的存储位置已经被占用，再用第二个散列函数，依次类推，直到找到空闲的存储位置。</p>
+</li>
+</ol>
+<h5 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h5><p>链表法是一种更加常用的散列冲突解决办法，相比开放寻址法，它要简单很多。在散列表中，数组的每个存储位置我们称之为“桶（bucket）”或者“槽（slot）”，它会对应一条链表，所有散列值相同的元素我们都放到相同槽位对应的链表中。当插入的时候，我们只需要通过散列函数计算出对应的散列槽位，将其插入到对应链表中即可，所以插入的时间复杂度是 O(1)。当查找、删除一个元素时，我们同样通过散列函数计算出对应的槽，然后遍历链表查找或者删除。</p>
+<h5 id="开放寻址法-VS-链表法"><a href="#开放寻址法-VS-链表法" class="headerlink" title="开放寻址法 VS 链表法"></a>开放寻址法 VS 链表法</h5><ul>
+<li>开放寻址法</li>
+</ul>
+<ol>
+<li>优点：开放寻址法实现的散列表中的数据都存储在数组中，可以有效地利用 CPU 缓存加快查询速度。而且，序列化起来比较简单。</li>
+<li>缺点：开发寻址法实现的散列表，删除数据的时候比较麻烦，需要特殊标记已经删除掉的数据。而且数据都存储在一个数组中，比起链表法，冲突的代价更高。所以，装载因子的上限不能太大且只能小于 1。</li>
+</ol>
+<ul>
+<li>链表法</li>
+</ul>
+<ol>
+<li>优点：链表法对内存的利用率比开放寻址法要高。因为链表结点可以在需要的时候再创建，并不需要像开放寻址法那样事先申请好。对大装载因子的容忍度更高。只要散列函数的值随机均匀，即便装载因子变成 10，比起顺序查找还是快很多。支持更多的优化策略，比如用红黑树代替链表。</li>
+<li>缺点：链表法包含指针，序列化起来就没那么容易。对于比较小的对象的存储，因为要存储指针，是比较消耗内存的，还有可能会让内存的消耗翻倍。而且，因为链表中的结点是零散分布在内存中的，不是连续的，所以对 CPU 缓存是不友好的。</li>
+</ol>
+<p>总结：当数据量比较小、装载因子小的时候，适合采用开放寻址法。存储大对象、大数据量的散列表更适合链表法。</p>
+<h4 id="装载因子"><a href="#装载因子" class="headerlink" title="装载因子"></a>装载因子</h4><p>装载因子（load factor）：当散列表中空闲位置不多的时候，散列冲突的概率就会大大提高。为了尽可能保证散列表的操作效率，一般情况下，我们会尽可能保证散列表中有一定比例的空闲槽位。装载因子就用来表示空位的多少。</p>
+<p>计算公式：散列表的装载因子 = 填入表中的元素个数 / 散列表的长度</p>
+<p>装载因子越大，说明空闲位置越少，冲突越多，散列表的性能会下降。当散列表的装载因子超过某个阈值时，就需要进行扩容。装载因子阈值需要选择得当。如果太大，会导致冲突过多；如果太小，会导致内存浪费严重。装载因子阈值的设置要权衡时间、空间复杂度。如果内存空间不紧张，对执行效率要求很高，可以降低装载因子的阈值；相反，如果内存空间紧张，对执行效率要求又不高，可以增加装载因子的值。</p>
+<h3 id="树"><a href="#树" class="headerlink" title="树"></a>树</h3><p>树是一种非线性数据结构。如下图所示：<br><img src="/2018/10/31/数据结构与算法-跳表、散列表和二叉树/220043e683ea33b9912425ef759556ae.jpg" alt><br>这里面每个元素称为“节点”，用来连接相邻节点之间的关系，我们叫做“父子节点”。上图中，A 节点就是 B 节点的父节点，B 节点是 A 节点的子节点。B、C、D 这三个节点的父节点是同一个节点，所以它们之间互称为兄弟节点。我们把没有父节点的节点叫做根节点，也就是图中的节点 E。我们把没有子节点的节点叫做叶子节点或者叶节点，比如图中的 G、H、I、J、K、L 都是叶子节点。</p>
+<p>三个相似概念：<br><img src="/2018/10/31/数据结构与算法-跳表、散列表和二叉树/50f89510ad1f7570791dd12f4e9adeb4.jpg" alt></p>
+<ol>
+<li>高度（Height）：节点到叶子节点的最长路径（边数）。</li>
+<li>深度（Depth）：根节点到这个节点所经历的边的个数。</li>
+<li>层数（Level）：节点的深度 + 1。</li>
+</ol>
+<h4 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h4><p>二叉树是最常用的一种树结构，二叉树每个节点最多只有两个节点，分别是左子节点和右子节点。</p>
+<ul>
+<li>满二叉树：叶子节点全部都在最底层，除了叶子节点之外，每个节点都有左右两个子节点。</li>
+<li>完全二叉树：叶子节点都在最底下两层，最后一层叶子节点都靠左排列，并且除了最后一层，其他层的节点个数都要达到最大。</li>
+</ul>
+<h5 id="二叉树的存储"><a href="#二叉树的存储" class="headerlink" title="二叉树的存储"></a>二叉树的存储</h5><ol>
+<li>链式存储法：基于链表存储，每个节点除存储本身数据以外，还有两个指向左右子节点的指针。只要拎住根节点，就可以通过左右子节点的指针，把整棵树都串起来。这种存储方式我们比较常用。大部分二叉树代码都是通过这种结构来实现的。<br><img src="/2018/10/31/数据结构与算法-跳表、散列表和二叉树/12cd11b2432ed7c4dfc9a2053cb70b8e.jpg" alt></li>
+<li>顺序存储法：基于数组存储，如果节点 X 存储在数组中下标为 i 的位置，下标为 2 <em> i 的位置存储的就是左子节点，下标为 2 </em> i + 1 的位置存储的就是右子节点。反过来，下标为 i/2 的位置存储就是它的父节点。通过这种方式，我们只要知道根节点存储的位置（一般情况下，为了方便计算子节点，根节点会存储在下标为 1 的位置），这样就可以通过下标计算，把整棵树都串起来。适合存储完全二叉树，如果是非完全二叉树，会浪费比较多的数组存储空间。<br><img src="/2018/10/31/数据结构与算法-跳表、散列表和二叉树/14eaa820cb89a17a7303e8847a412330.jpg" alt></li>
+</ol>
+<h5 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h5><ol>
+<li>前序遍历：对于树中的任意节点来说，先打印这个节点，然后再打印它的左子树，最后打印它的右子树。</li>
+<li>中序遍历：对于树中的任意节点来说，先打印它的左子树，然后再打印它本身，最后打印它的右子树。</li>
+<li>后序遍历：对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印这个节点本身。</li>
+</ol>
+<p>三种遍历的时间复杂度都为 O(n)。</p>
+<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>二叉查找树是二叉树中最常用的一种类型，支持动态数据集合的快速插入、删除、查找操作。其中序遍历即为顺序打印。<br>要求：在树中的任意一个节点，其左子树中的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。</p>
+<h5 id="二叉查找树的查找操作"><a href="#二叉查找树的查找操作" class="headerlink" title="二叉查找树的查找操作"></a>二叉查找树的查找操作</h5><p>先取根节点，如果它等于我们要查找的数据，那就返回。如果要查找的数据比根节点的值小，那就在左子树中递归查找；如果要查找的数据比根节点的值大，那就在右子树中递归查找。<br>代码实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">find</span><span class="params">(Node root, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (root.data == value) &#123;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (root.data &gt; value) &#123;</span><br><span class="line">        <span class="keyword">return</span> find(root.left, value);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> find(root.right, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="二叉查找树插入操作"><a href="#二叉查找树插入操作" class="headerlink" title="二叉查找树插入操作"></a>二叉查找树插入操作</h5><p>新插入的数据一般都是在叶子节点上，所以只需要从根节点开始，依次比较要插入的数据和节点的大小关系。如果要插入的数据比节点的数据大，并且节点的右子树为空，就将新数据直接插到右子节点的位置；如果不为空，就再递归遍历右子树，查找插入位置。同理，如果要插入的数据比节点数值小，并且节点的左子树为空，就将新数据插入到左子节点的位置；如果不为空，就再递归遍历左子树，查找插入位置。<br>代码实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Node root, Node newNode)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">        root = newNode;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (root.data &lt; newNode.data) &#123;</span><br><span class="line">        <span class="keyword">if</span> (root.right == <span class="keyword">null</span>) &#123;</span><br><span class="line">            root.right = newNode;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            insert(root.right, newNode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (root.data &gt; newNode.data) &#123;</span><br><span class="line">        <span class="keyword">if</span> (root.left == <span class="keyword">null</span>) &#123;</span><br><span class="line">            root.left = newNode;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            insert(root.left, newNode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="二叉查找树删除操作"><a href="#二叉查找树删除操作" class="headerlink" title="二叉查找树删除操作"></a>二叉查找树删除操作</h5><p>删除操作针对要删除节点的子节点个数的不同，需要分三种情况来处理。</p>
+<ul>
+<li>第一种情况是，如果要删除的节点没有子节点，只需要直接将父节点中，指向要删除节点的指针置为 null。</li>
+<li>第二种情况是，如果要删除的节点只有一个子节点（只有左子节点或者右子节点），只需要更新父节点中，指向要删除节点的指针，让它指向要删除节点的子节点就可以了。</li>
+<li>第三种情况是，如果要删除的节点有两个子节点，这就比较复杂了。需要找到这个节点的右子树中的最小节点，把它替换到要删除的节点上。然后再删除掉这个最小节点，因为最小节点肯定没有左子节点（如果有左子结点，那就不是最小节点了），所以，可以应用上面两条规则来删除这个最小节点。<br>代码实现：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(Node root, Node removeNode)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span> || removeNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Node temp = root;</span><br><span class="line">    Node parentNode = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span> (temp != <span class="keyword">null</span> &amp;&amp; temp.data != removeNode.data) &#123;</span><br><span class="line">        parentNode = temp;</span><br><span class="line">        <span class="keyword">if</span> (temp.data &gt; removeNode.data) &#123;</span><br><span class="line">            temp = temp.left;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            temp = temp.right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 没有找到要删除的，直接返回</span></span><br><span class="line">    <span class="keyword">if</span> (temp == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 删除的节点有两个节点</span></span><br><span class="line">    <span class="keyword">if</span> (temp.left != <span class="keyword">null</span> &amp;&amp; temp.right != <span class="keyword">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">        Node minNode = temp.right;</span><br><span class="line">        Node minNodeParent = temp;</span><br><span class="line">        <span class="keyword">while</span> (minNode.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">            minNodeParent = minNode;</span><br><span class="line">            minNode = minNode.left;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        temp.data = minNode.data;</span><br><span class="line">        temp = minNode;</span><br><span class="line">        parentNode = minNodeParent;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 删除叶子节点或只有一个叶子节点的</span></span><br><span class="line">    Node child;</span><br><span class="line">    <span class="keyword">if</span> (temp.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">        child = temp.left;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (temp.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">        child = temp.right;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        child = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (parentNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">        root = child;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (parentNode.left == temp) &#123;</span><br><span class="line">        parentNode.left = child;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        parentNode.right = child;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><ol>
+<li>最坏情况时间复杂度：最坏情况下二叉树左右节点极度不平衡，退化为链表，所以时间复杂度就变成了 O(n)。</li>
+<li>最好情况时间复杂度：最好情况二叉树是一棵二叉树（或满二叉树）。时间复杂度跟树的高度成正比，即 O(height)。设最大高度为 h，节点个数为 n，则 n 和 h 满足 n = 1 + 2 + 4 + …… + 2<sup>h - 1</sup> + 2 <sup>h</sup>。借助等比数列求和公式，可以计算出 h = log<sub>2</sub>n。可知最好情况时间复杂度为 O(logn)。</li>
+</ol>
+<h4 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h4><p>二叉查找树在频繁的动态更新过程中，可能会出现的高度远大于 log<sub>2</sub>n的情况，导致各个操作的效率下降，极端情况下，二叉树会退化为链表，时间复杂度退化到 O(n)。要解决这个复杂度退化的问题，就需要设计一种平衡二叉查找树。红黑树是最常见的平衡二叉查找树。</p>
+<p>平衡二叉查找树严格定义：二叉树中任意一个节点的左右子树的高度相差不能大于 1。AVL 树是最先被发明，且严格符合平衡二叉查找树定义的平衡二叉查找树。</p>
+<p>很多的平衡二叉查找树其实并没有严格符合上述定义，只是让整棵树看起来相对的平衡，不要出现左子树很高、右子树很矮的情况。红黑树就是其中的一种。</p>
+<p>红黑树需满足的几点要求：</p>
+<ol>
+<li>每个节点不是红色就是黑色。</li>
+<li>根节点是黑色的。</li>
+<li>每个叶子节点都是黑色的空节点（NIL）。</li>
+<li>如果一个节点是红色的，则他的两个子节点都是黑色的。</li>
+<li>每个节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点。</li>
+</ol>
+<p>红黑树示意图：<br>下图中黑色的、空的叶子节点已省略。<br><img src="/2018/10/31/数据结构与算法-跳表、散列表和二叉树/903ee0dcb62bce2f5b47819541f9069a.jpg" alt></p>
+<p>在红黑树的插入、删除节点的过程中，可能会破坏上述几点要求，就需要进行平衡调整，使其满足上述要求。调整的方法涉及左旋、右旋和改变颜色。</p>
+<p>比较：AVL 树是一种高度平衡的二叉树，所以查找的效率非常高，但是，有利就有弊，AVL 树为了维持这种高度的平衡，就要付出更多的代价。每次插入、删除都要做调整，就比较复杂、耗时。所以，对于有频繁的插入、删除操作的数据集合，使用 AVL 树的代价就有点高了。红黑树只是做到了近似平衡，并不是严格的平衡，所以在维护平衡的成本上，要比 AVL 树要低。所以，红黑树的插入、删除、查找各种操作性能都比较稳定。对于工程应用来说，要面对各种异常情况，为了支撑这种工业级的应用，因此更倾向于这种性能稳定的平衡二叉查找树。</p>
+<p>注：以上关于红黑树做简单介绍，了解更多信息内容可自行搜索。</p>
+<h3 id="跳表、散列表和平衡树的比较"><a href="#跳表、散列表和平衡树的比较" class="headerlink" title="跳表、散列表和平衡树的比较"></a>跳表、散列表和平衡树的比较</h3><ul>
+<li>跳表和各种平衡树（如AVL、红黑树等）的元素是有序排列的，散列表是无序的。因此，跳表和平衡树可以做范围查找，散列表只能做单个 key 的查找，不适宜做范围查找。</li>
+<li>在做范围查找时，平衡树比跳表要复杂。在平衡树上找到指定范围的最小值后，还需以中序遍历的顺序继续查找其他不超过大值的节点。而在跳表上进行范围查找就比较简单，只需要找到小值后，对原始链表进行遍历查找即可。</li>
+<li>平衡树的插入和删除操作可能会引发子树的调整，逻辑复杂，而跳表的插入和删除操作只需要修改相邻节点的指针，操作简单快速。</li>
+<li>查找单个 key，跳表和平衡树的时间复杂度都为 O(logn)，大体相当；而哈希表在保持较低的哈希值冲突概率的前提下，查找时间复杂度接近 O(1)，性能更高一些。</li>
+<li>从算法实现难度上来比较，跳表比平衡树要简单得多。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构与算法/" rel="tag"># 数据结构与算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/15/数据结构与算法-递归、排序、二分查找/" rel="next" title="数据结构与算法-递归、排序、二分查找">
+                <i class="fa fa-chevron-left"></i> 数据结构与算法-递归、排序、二分查找
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/12/一、微服务架构概述/" rel="prev" title="一、微服务架构概述">
+                一、微服务架构概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#跳表（SkipList）"><span class="nav-number">1.</span> <span class="nav-text">跳表（SkipList）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度"><span class="nav-number">1.1.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空间复杂度"><span class="nav-number">1.2.</span> <span class="nav-text">空间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跳表索引动态更新"><span class="nav-number">1.3.</span> <span class="nav-text">跳表索引动态更新</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#散列表（HashTable）"><span class="nav-number">2.</span> <span class="nav-text">散列表（HashTable）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#散列函数"><span class="nav-number">2.1.</span> <span class="nav-text">散列函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#散列冲突"><span class="nav-number">2.2.</span> <span class="nav-text">散列冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开放寻址法"><span class="nav-number">2.2.1.</span> <span class="nav-text">开放寻址法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#链表法"><span class="nav-number">2.2.2.</span> <span class="nav-text">链表法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开放寻址法-VS-链表法"><span class="nav-number">2.2.3.</span> <span class="nav-text">开放寻址法 VS 链表法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#装载因子"><span class="nav-number">2.3.</span> <span class="nav-text">装载因子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树"><span class="nav-number">3.</span> <span class="nav-text">树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉树"><span class="nav-number">3.1.</span> <span class="nav-text">二叉树</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#二叉树的存储"><span class="nav-number">3.1.1.</span> <span class="nav-text">二叉树的存储</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二叉树的遍历"><span class="nav-number">3.1.2.</span> <span class="nav-text">二叉树的遍历</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉查找树"><span class="nav-number">3.2.</span> <span class="nav-text">二叉查找树</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#二叉查找树的查找操作"><span class="nav-number">3.2.1.</span> <span class="nav-text">二叉查找树的查找操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二叉查找树插入操作"><span class="nav-number">3.2.2.</span> <span class="nav-text">二叉查找树插入操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二叉查找树删除操作"><span class="nav-number">3.2.3.</span> <span class="nav-text">二叉查找树删除操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时间复杂度-1"><span class="nav-number">3.2.4.</span> <span class="nav-text">时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#红黑树"><span class="nav-number">3.3.</span> <span class="nav-text">红黑树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳表、散列表和平衡树的比较"><span class="nav-number">4.</span> <span class="nav-text">跳表、散列表和平衡树的比较</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据结构与算法,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数组数组是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。 高效的随机访问因为数组是连续的内存空间和相同类型的数据。造就了它高效的“随机访问”。可以根据寻址公式，可以快速的计算出该元素存储的内存地址。时间复杂度为O(1)。12345// 一维数组的寻址公式，base_address 为内存的首地址，data_type_size 为单个元素的大小a[i]_address =">
+<meta name="keywords" content="数据结构与算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法-数组、链表、栈、队列">
+<meta property="og:url" content="http://yoursite.com/2018/10/02/数据结构与算法-数组和链表/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="数组数组是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。 高效的随机访问因为数组是连续的内存空间和相同类型的数据。造就了它高效的“随机访问”。可以根据寻址公式，可以快速的计算出该元素存储的内存地址。时间复杂度为O(1)。12345// 一维数组的寻址公式，base_address 为内存的首地址，data_type_size 为单个元素的大小a[i]_address =">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-12-04T03:22:53.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构与算法-数组、链表、栈、队列">
+<meta name="twitter:description" content="数组数组是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。 高效的随机访问因为数组是连续的内存空间和相同类型的数据。造就了它高效的“随机访问”。可以根据寻址公式，可以快速的计算出该元素存储的内存地址。时间复杂度为O(1)。12345// 一维数组的寻址公式，base_address 为内存的首地址，data_type_size 为单个元素的大小a[i]_address =">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/02/数据结构与算法-数组和链表/">
+
+
+
+
+
+  <title>数据结构与算法-数组、链表、栈、队列 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/02/数据结构与算法-数组和链表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据结构与算法-数组、链表、栈、队列</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-02T19:17:30+08:00">
+                2018-10-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>数组是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。</p>
+<h4 id="高效的随机访问"><a href="#高效的随机访问" class="headerlink" title="高效的随机访问"></a>高效的随机访问</h4><p>因为数组是连续的内存空间和相同类型的数据。造就了它高效的“随机访问”。可以根据寻址公式，可以快速的计算出该元素存储的内存地址。时间复杂度为O(1)。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一维数组的寻址公式，base_address 为内存的首地址，data_type_size 为单个元素的大小</span></span><br><span class="line">a[i]_address = base_address + i * data_type_size</span><br><span class="line"></span><br><span class="line"><span class="comment">// 二维数组寻址公式，对于 m * n 的数组</span></span><br><span class="line">a[i][j]_address = base_address + ( i * n + j) * data_type_size</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h4 id="低效的插入和删除"><a href="#低效的插入和删除" class="headerlink" title="低效的插入和删除"></a>低效的插入和删除</h4><p>数组为了保持内存数据的连续性，在插入和删除的时候会导致其他数据的移动。</p>
+<ol>
+<li>尾部插入或删除，其他数据无需移动。时间复杂度为O(1)。</li>
+<li>头部插入或删除，后面所有数据都得移位。时间复杂度为O(n)。</li>
+<li>任意位置插入或删除，平均时间复杂度为O(n)。</li>
+</ol>
+<h4 id="容器ArrayList-VS-数组"><a href="#容器ArrayList-VS-数组" class="headerlink" title="容器ArrayList VS 数组"></a>容器ArrayList VS 数组</h4><ol>
+<li>ArrayList 封装了很多数组操作的细节。</li>
+<li>ArrayList 支持动态扩容，最好在创建时事先指定大小 int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1)。</li>
+<li>ArrayList 无法存储基本数据类型。</li>
+</ol>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>链表是一种通过“指针”将一组零散的内存块串联起来的线性表数据结构。三种常见的链表结构：单链表、双向链表和循环链表。</p>
+<h4 id="低效的随机访问"><a href="#低效的随机访问" class="headerlink" title="低效的随机访问"></a>低效的随机访问</h4><p>因为链表中的数据并非连续存储的，所以无法像数组那样，根据首地址和下标，通过寻址公式直接计算出对应的内存地址，而是需要根据指针一个结点一个结点地依次遍历，直到找到相应的结点。时间复杂度为O(n)。</p>
+<h4 id="高效的插入和删除"><a href="#高效的插入和删除" class="headerlink" title="高效的插入和删除"></a>高效的插入和删除</h4><p>在链表中插入或删除一个数据时，因为链表的存储空间本身就不是连续的，所以不需要为了保持内存的连续性而搬移结点，只需要考虑相邻结点的指针改变。时间复杂度为O(1)。</p>
+<h3 id="链表-VS-数组"><a href="#链表-VS-数组" class="headerlink" title="链表 VS 数组"></a>链表 VS 数组</h3><ol>
+<li>数据插入、删除、随机访问操作的时间复杂度正好相反。</li>
+<li>数组大小固定，一经声明就占用整块连续内存空间；链表本身没有大小的限制，天然支持动态扩容。</li>
+<li>链表每个结点都需要消耗额外的存储空间去存储一份指向下个结点的指针，内存消耗会翻倍。对链表的频繁插入、删除操作，还会导致频繁的内存申请和释放，容易造成内存碎片。</li>
+</ol>
+<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p>栈是一种后进先出，先进后出，“操作受限”的线性表。只允许在一端插入和删除数据。<br>从功能上来看，数组或链表可以替代栈。但是，特定的数据结构是对特定业务场景的抽象。当某个数据集合只涉及在一端插入和删除数据，满足后进先出、先进后出的特性，就应该首选“栈”这种数据结构。而且，数组或链表暴露了太多的操作接口，容易出错。</p>
+<h4 id="如何实现一个“栈”"><a href="#如何实现一个“栈”" class="headerlink" title="如何实现一个“栈”"></a>如何实现一个“栈”</h4><p>栈既可以用数组来实现，也可以用链表来实现。用数组实现的栈，叫作顺序栈，用链表实现的栈，叫作链式栈。<br>以下是一个用数组实现的顺序栈<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 基于数组实现的顺序栈</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayStack</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String[] items;  <span class="comment">// 数组</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> count;       <span class="comment">// 栈中元素个数</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> n;           <span class="comment">//栈的大小</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 初始化数组，申请一个大小为n的数组空间</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ArrayStack</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.items = <span class="keyword">new</span> String[n];</span><br><span class="line">    <span class="keyword">this</span>.n = n;</span><br><span class="line">    <span class="keyword">this</span>.count = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 入栈操作</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">push</span><span class="params">(String item)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 数组空间不够了，直接返回false，入栈失败。</span></span><br><span class="line">    <span class="keyword">if</span> (count == n) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">// 将item放到下标为count的位置，并且count加一</span></span><br><span class="line">    items[count] = item;</span><br><span class="line">    ++count;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 出栈操作</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 栈为空，则直接返回null</span></span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 返回下标为count-1的数组元素，并且栈中元素个数count减一</span></span><br><span class="line">    String tmp = items[count-<span class="number">1</span>];</span><br><span class="line">    --count;</span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>空间复杂度：入栈、出栈只需要一两个临时变量存储空间，所以空间复杂度是 O(1)。<br>时间复杂度：入栈、出栈只涉及栈顶个别数据的操作，所以时间复杂度都是 O(1)。</p>
+<p>栈的应用：栈在函数调用中的应用，栈在表达式求值中的应用（比如：34 + 13 * 9 + 44 - 12 / 3），栈在括号匹配中的应用（比如：{}{([])()}）。</p>
+<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p>队列是一种先进先出（FIFO），“操作受限”的线性表。只能从队头出队，队尾入队。常见的循环队列、阻塞队列、并发队列等。</p>
+<h4 id="如何实现一个队列"><a href="#如何实现一个队列" class="headerlink" title="如何实现一个队列"></a>如何实现一个队列</h4><p>跟栈一样，队列既可以用数组来实现，也可以用链表来实现。用数组实现的队列，叫作顺序队列，用链表实现的队列，叫作链式队列。<br>以下是一个用数组实现的队列<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用数组实现的队列</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayQueue</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 数组：items，数组大小：n</span></span><br><span class="line">  <span class="keyword">private</span> String[] items;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// head表示队头下标，tail表示队尾下标</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> head = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> tail = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 申请一个大小为capacity的数组</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ArrayQueue</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">    items = <span class="keyword">new</span> String[capacity];</span><br><span class="line">    n = capacity;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 入队操作，将item放入队尾</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">enqueue</span><span class="params">(String item)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// tail == n表示队列末尾没有空间了</span></span><br><span class="line">    <span class="keyword">if</span> (tail == n) &#123;</span><br><span class="line">      <span class="comment">// tail ==n &amp;&amp; head==0，表示整个队列都占满了</span></span><br><span class="line">      <span class="keyword">if</span> (head == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      <span class="comment">// 数据搬移</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = head; i &lt; tail; ++i) &#123;</span><br><span class="line">        items[i-head] = items[i];</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 搬移完之后重新更新head和tail</span></span><br><span class="line">      tail -= head;</span><br><span class="line">      head = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    items[tail] = item;</span><br><span class="line">    ++tail;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 出队</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">dequeue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 如果head == tail 表示队列为空</span></span><br><span class="line">    <span class="keyword">if</span> (head == tail) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    String ret = items[head];</span><br><span class="line">    ++head;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>空间复杂度：入队、出队空间复杂度是O(1).<br>时间复杂度：入队、出队时间复杂度是O(1)，在入队时虽然有数据搬移，时间复杂度为O(n)，但均摊时间复杂度依然为O(1)。</p>
+<h4 id="常见队列"><a href="#常见队列" class="headerlink" title="常见队列"></a>常见队列</h4><ol>
+<li>循环队列：原本数组实现的队列是有头有尾的，是一条直线。循环队列就是把它首尾相连，扳成了一个环。不需再进行数据搬移。</li>
+<li>阻塞队列：在队列基础上增加了阻塞操作。在队列为空的时候，从队头取数据会被阻塞，直到队列中有了数据才能返回；如果队列已经满了，那插入数据的操作就会被阻塞，直到队列中有空闲位置后再插入数据，然后再返回。</li>
+<li>并发队列：并发队列简单的实现就是在enqueue()、dequeue()方法上加锁，但是锁粒度大并发度会比较低，同一时刻仅允许一个存或取操作。实际上，基于数组的循环队列利用CAS原子操作，可以实现非常高效的并发队列。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构与算法/" rel="tag"># 数据结构与算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/28/数据结构与算法-复杂度分析/" rel="next" title="数据结构与算法-复杂度分析">
+                <i class="fa fa-chevron-left"></i> 数据结构与算法-复杂度分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/15/数据结构与算法-递归、排序、二分查找/" rel="prev" title="数据结构与算法-递归、排序、二分查找">
+                数据结构与算法-递归、排序、二分查找 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#高效的随机访问"><span class="nav-number">1.1.</span> <span class="nav-text">高效的随机访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#低效的插入和删除"><span class="nav-number">1.2.</span> <span class="nav-text">低效的插入和删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器ArrayList-VS-数组"><span class="nav-number">1.3.</span> <span class="nav-text">容器ArrayList VS 数组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表"><span class="nav-number">2.</span> <span class="nav-text">链表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#低效的随机访问"><span class="nav-number">2.1.</span> <span class="nav-text">低效的随机访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高效的插入和删除"><span class="nav-number">2.2.</span> <span class="nav-text">高效的插入和删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表-VS-数组"><span class="nav-number">3.</span> <span class="nav-text">链表 VS 数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈"><span class="nav-number">4.</span> <span class="nav-text">栈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何实现一个“栈”"><span class="nav-number">4.1.</span> <span class="nav-text">如何实现一个“栈”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列"><span class="nav-number">5.</span> <span class="nav-text">队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何实现一个队列"><span class="nav-number">5.1.</span> <span class="nav-text">如何实现一个队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见队列"><span class="nav-number">5.2.</span> <span class="nav-text">常见队列</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>
