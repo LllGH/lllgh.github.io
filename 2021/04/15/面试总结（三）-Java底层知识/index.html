@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="面试总结,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="平台无关性平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处运行。也就是说，用 Java 创建的可执行二进制程序，能够不加改变的运行于多个平台。对于不通的平台，不同的硬件和操作系统，最主要的区别就是指令不同。因此，想要做到跨平台，最重要的就是可以根据对应的硬件和操作系统生成对应的二进制指令。而这一工作，主要由 Java 虚拟机完成。虽然 Java 语言是平台无关的，但是JVM却是">
+<meta name="keywords" content="面试总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试总结（三）-Java底层知识">
+<meta property="og:url" content="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="平台无关性平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处运行。也就是说，用 Java 创建的可执行二进制程序，能够不加改变的运行于多个平台。对于不通的平台，不同的硬件和操作系统，最主要的区别就是指令不同。因此，想要做到跨平台，最重要的就是可以根据对应的硬件和操作系统生成对应的二进制指令。而这一工作，主要由 Java 虚拟机完成。虽然 Java 语言是平台无关的，但是JVM却是">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/v2-39d91fed2de46967483337f867eeeb29_1440w.jpeg">
+<meta property="og:image" content="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/jvm.jpeg">
+<meta property="og:image" content="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/java类生命周期图.jpeg">
+<meta property="og:image" content="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/classloader.jpeg">
+<meta property="og:updated_time" content="2021-04-22T04:27:57.883Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试总结（三）-Java底层知识">
+<meta name="twitter:description" content="平台无关性平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处运行。也就是说，用 Java 创建的可执行二进制程序，能够不加改变的运行于多个平台。对于不通的平台，不同的硬件和操作系统，最主要的区别就是指令不同。因此，想要做到跨平台，最重要的就是可以根据对应的硬件和操作系统生成对应的二进制指令。而这一工作，主要由 Java 虚拟机完成。虽然 Java 语言是平台无关的，但是JVM却是">
+<meta name="twitter:image" content="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/v2-39d91fed2de46967483337f867eeeb29_1440w.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/">
+
+
+
+
+
+  <title>面试总结（三）-Java底层知识 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试总结（三）-Java底层知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-15T11:30:14+08:00">
+                2021-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="平台无关性"><a href="#平台无关性" class="headerlink" title="平台无关性"></a>平台无关性</h3><p>平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处运行。也就是说，用 Java 创建的可执行二进制程序，能够不加改变的运行于多个平台。<br>对于不通的平台，不同的硬件和操作系统，最主要的区别就是指令不同。因此，想要做到跨平台，最重要的就是可以根据对应的硬件和操作系统生成对应的二进制指令。而这一工作，主要由 Java 虚拟机完成。虽然 Java 语言是平台无关的，但是JVM却是平台有关的，不同的操作系统上面要安装对应的JVM。</p>
+<p><img src="/2021/04/15/面试总结（三）-Java底层知识/v2-39d91fed2de46967483337f867eeeb29_1440w.jpeg" alt></p>
+<ol>
+<li>Java源文件被编译器编译成字节码文件。</li>
+<li>JVM将字节码文件编译成相应的操作系统机器码。</li>
+<li>机器码调用相应操作系统的本地方法库执行相应的方法。</li>
+</ol>
+<p>Q1: 为什么要先编译成字节码再解析成机器码，而JVM不直接将字节码解析成机器码呢？</p>
+<ol>
+<li>准备工作：每次执行都需要各种检查，都要重新编译重新分析，所以引入了中间字节码，多次执行程序不需要反复编译。</li>
+<li>兼容性：也可以将别的语言解析成字节码。也可以被jvm执行，增加兼容扩展能力。</li>
+</ol>
+<a id="more"></a>
+<h3 id="JVM（Java-虚拟机）"><a href="#JVM（Java-虚拟机）" class="headerlink" title="JVM（Java 虚拟机）"></a>JVM（Java 虚拟机）</h3><p>他是虚拟的计算机，通过软件仿真模拟计算机功能。拥有完善的硬件架构，如处理器，堆栈等，他屏蔽了底层操作系统原理。这是一个内存中的虚拟机，写的所有类，变量，方法都在内存中，JVM本质上就是一个进程。<br>Java 虚拟机主要分为五大模块：类装载器子系统、运行时数据区、执行引擎、本地方法接口和垃圾收集模块。其中垃圾收集模块在Java虚拟机规范中并没有要求Java虚拟机垃圾收集，但是在没有发明无限的内存之前，大多数JVM实现都是有垃圾收集的。</p>
+<p><img src="/2021/04/15/面试总结（三）-Java底层知识/jvm.jpeg" alt></p>
+<h4 id="Java类的加载机制"><a href="#Java类的加载机制" class="headerlink" title="Java类的加载机制"></a>Java类的加载机制</h4><h5 id="什么是类的加载"><a href="#什么是类的加载" class="headerlink" title="什么是类的加载"></a>什么是类的加载</h5><p>类的加载指的是将类的 .class 文件中的二进制数据读取到内存中，将其放在运行时数据区的方法区内，然后再堆区创建一个 <code>java.lang.Class</code> 对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区的 Class 对象，Class 对象封装了类在方法区内的数据结构，并且向 Java 程序员提供了访问方法区内的数据结构的接口。</p>
+<h5 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h5><p><img src="/2021/04/15/面试总结（三）-Java底层知识/java类生命周期图.jpeg" alt></p>
+<p>其中类加载的过程包括了加载、验证、准备、解析、初始化五个阶段。</p>
+<ul>
+<li>加载</li>
+</ul>
+<ol>
+<li>加载：查找并加载类的二进制数据，加载是类加载过程的第一个阶段，在加载阶段，虚拟机需要完成三件事情。1）通过一个类的全限定名来获取其定义的二进制字节流；2）将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构；3）在 Java 堆中生成一个代表这个类的 <code>java.lang.Class</code> 对象，作为对方法区这些数据访问的入口。</li>
+</ol>
+<ul>
+<li>连接</li>
+</ul>
+<ol>
+<li>验证：验证是连接阶段的第一步，这一阶段的目的是为了确保 Class 文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。验证阶段大致会完成4个阶段的检验动作。1）文件格式验证；2）元数据验证；3）字节码验证；4）符号引用验证。</li>
+<li>准备：准备阶段是正式为类的静态变量分配内存并将其初始化为默认值的阶段。这些内存都将在方法区分配，这里所设置的初始值通常情况下是数据类型默认的零值（如：0，null，false 等），而不是被在 Java 代码中被显示地赋予的值。如果同时被 final 和 static 修饰，那么准备阶段变量 value 就会被初始化为属性所指的值。</li>
+<li>解析：解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程。解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符7类符合引用进行。1）符号引用就是一组符合来描述目标，可以是任何字面量。2）直接引用就是直接指向目标的指针、相对偏移量或一个间接定位到目标的句柄。</li>
+</ol>
+<ul>
+<li>初始化</li>
+</ul>
+<ol>
+<li>初始化：初始化阶段为类的静态变量赋予正确的初始值，JVM 负责对类初始化，主要对类变量进行初始化。在 Java 中对类变量进行初始值设定有两种方式：1）声明类变量是指定初始值；2）使用静态代码块为类变量指定初始值。</li>
+<li>类初始化时机：只有当对类的主动使用的时候才会导致类的初始化，类的主动使用包括六种：1）创建类的实例，即 new 的方式；2）访问某个类或接口的静态变量，或者对该静态变量赋值；3）调用类的静态方法；4）反射，如 <code>Class.forName(&quot;com.cbhis.Test&quot;)</code>；5）初始化某个类的子类，则其父类也会被初始化；6）Java 虚拟机启动时被标明为启动类的类（<code>Java Test</code>），直接使用 <code>java.exe</code> 命令来运行某个主类。</li>
+</ol>
+<ul>
+<li>结束生命周期<br>Java 虚拟机结束生命周期有如下几种情况：1）执行了 <code>System.exit()</code> 方法；2）程序正常执行结束；3）程序在执行过程中遇到了异常或错误而异常终止；4）由于操作系统出现错误而导致 Java 虚拟机进程终止。</li>
+</ul>
+<h5 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h5><p>从 Java 虚拟机的角度来讲，只存在两种不同的类加载器：1）启动类加载器：它使用 C++ 实现（仅限于 Hotspot，即 JDK1.5 之后默认的虚拟机，有很多其他的虚拟机是用 Java 语言实现的），是虚拟机自身的一部分；2）所有其他的类加载器：这些类加载器都由 Java 语言实现，独立于虚拟机之外，并且全部继承自抽象类 <code>java.lang.ClassLoader</code>，这些类加载器需要由启动类加载器加载到内存中之后才能去加载其他的类。</p>
+<p>从 Java 开发人员的角度来看，类加载器可以大致划分为以下三类：</p>
+<ul>
+<li>启动类加载器：<code>Bootstrap ClassLoader</code>，负责加载存放在 JDK/jre/lib（JDK 代表 JDK 的安装目录）下，或被 <code>-Xbootclasspath</code> 参数指定的路径中的，并且能被虚拟机识别的类库（如：rt.jar，所有的 java. 开头的类均被 <code>Bootstrap ClassLoader</code> 加载）。启动类加载器是无法被 Java 程序直接引用的。</li>
+<li>扩展类加载器：<code>Extension ClassLoader</code>，该加载器由 <code>sun.simc.Launcher$ExtClassLoader</code> 实现，它负责加载 JDK/jre/lib/ext 目录中，或者 <code>java.ext.dirs</code> 系统变量指定的路径中的所有类库（如：javax. 开头的类），开发者可以直接使用扩展类加载器。</li>
+<li>应用类加载器：<code>Application ClassLoader</code>，该类加载器由 <code>sun.simc.Launcher$AppClassLoader</code> 来实现，它负责加载用户类路径（ClassPath) 所指定的类，开发者可以直接使用该类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是默认的类加载器。</li>
+</ul>
+<p>应用程序都是由这三种类加载器配合进行加载的，如果有必要，还可以加入自定义类加载器。因为 JVM 自带的 ClassLoader 只是从本地文件系统加载标准的 java class 文件，因此如果编写了自己的 ClassLoader，可以做到如下几点：</p>
+<ol>
+<li>在执行非置信代码之前，自动验证数字签名。</li>
+<li>动态的创建符合用户特定需要的定制化构建类。</li>
+<li>从特定的场所取得 java class，例如数据库中和网络中。</li>
+</ol>
+<p>这几种类加载器层次关系如下图所示：<br><img src="/2021/04/15/面试总结（三）-Java底层知识/classloader.jpeg" alt></p>
+<h5 id="类的加载"><a href="#类的加载" class="headerlink" title="类的加载"></a>类的加载</h5><h6 id="JVM-类加载机制"><a href="#JVM-类加载机制" class="headerlink" title="JVM 类加载机制"></a>JVM 类加载机制</h6><ol>
+<li>全盘负责：当一个类加载器负责加载某个 Class 时，该 Class 所依赖的和引用的其他 Class 也将由该类加载器负责载入，除非显示使用另外一个类加载器来载入。</li>
+<li>父类委托：先让父类加载器试图加载该类，只有在父类加载器无法加载该类时才尝试从自己的类路径中记载该类。</li>
+<li>缓存机制：缓存机制将会保证所有加载过的 Class 都会被缓存，当程序中需要使用某个 Class 时，类加载器先从缓存区寻找该 Class，只有缓存区不存在，系统才会读取该类对应的二进制数据，并将其转换成 Class 对象，存入缓存区。这就是为什么修改了 Class 后，必须重启 JVM，程序的修改才会生效。</li>
+</ol>
+<h6 id="类加载的三种方式"><a href="#类加载的三种方式" class="headerlink" title="类加载的三种方式"></a>类加载的三种方式</h6><ol>
+<li>命令行启动应用时候由 JVM 初始化加载。</li>
+<li>通过 <code>Class.forName()</code> 方法动态加载。</li>
+<li>通过 <code>ClassLoader.loadClass()</code>方法动态加载</li>
+</ol>
+<p>Q1: Class.forName() 和 ClassLoader.loadClass() 区别</p>
+<ol>
+<li><code>Class.forName()</code>：将类的 .class 文件加载到 jvm 中之外，还会对类进行解释，执行类中的 static 块；</li>
+<li><code>ClassLoader.loadClass()</code>：将 .class 文件加载到 jvm 中，不会执行 static 中的内容，只有在 newInstance() 才会去执行 static 块；</li>
+<li><code>Class.forName(name, initialize, loader)</code>带参函数也可控制是否加载 static 块，并且只有调用了 newInstance() 方法才会调用构造函数，创建类对象。</li>
+</ol>
+<h6 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h6><p>双亲委派模型的工作流程是：如果一个类加载器收到了类加载器的请求，它首先不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上，因此，所有的类加载器请求最终都应该被传递到顶层的启动类加载器中，只有当父加载器在它的搜索范围中没有找到所需的类时，即无法完成该加载，子加载器才会尝试自己去加载该类。</p>
+<p>意义：1）系统类防止内存中出现多份同样的字节码；2）保证 Java 程序安全稳定运行。</p>
+<p>参考链接：<a href="https://mp.weixin.qq.com/s?__biz=MzI4NDY5Mjc1Mg==&amp;mid=2247483934&amp;idx=1&amp;sn=41c46eceb2add54b7cde9eeb01412a90&amp;chksm=ebf6da61dc81537721d36aadb5d20613b0449762842f9128753e716ce5fefe2b659d8654c4e8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">jvm系列(一):java类的加载机制</a></p>
+<h4 id="JVM-内存结构"><a href="#JVM-内存结构" class="headerlink" title="JVM 内存结构"></a>JVM 内存结构</h4><p>JVM 内存结构包括了程序计数器、虚拟机栈、本地方法栈、堆和方法区。程序计数器、虚拟机栈和本地方法栈属于线程私有的内存区域；而堆和方法区是所有线程共享的内存区域。</p>
+<h5 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h5><p>程序计数器是一块较小的内存空间，线程私有，它的作用可以看作是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型，各种虚拟机可能会通过一些更高效的方式去实现），字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。</p>
+<p>如果线程正在执行一个 Java 方法，这个计数器记录的是正在执行的虚拟机字节码指令的地址；如果正在执行的是 native 方法，这个计数器值则为空（Undefined）。</p>
+<h5 id="虚拟机栈（JVM-Stacks）"><a href="#虚拟机栈（JVM-Stacks）" class="headerlink" title="虚拟机栈（JVM Stacks）"></a>虚拟机栈（JVM Stacks）</h5><p>Java 虚拟机也是线程私有的，它的生命周期与线程相同。虚拟机栈描述的是 Java 方法执行的内存模型：每个方法被执行的时候都会同时创建一个栈帧（Stack Frame）用于存储局部变量表、操作栈、动态链接、方法出口等信息。每一个方法被调用直至执行完成的过程，就对应着一个栈帧在虚拟机中从入栈到出栈的过程。</p>
+<p>局部变量表存放了编译期可知的各种八种基本数据类型、对象引用和returnAddress类型。</p>
+<h5 id="本地方法栈（Native-Method-Stacks）"><a href="#本地方法栈（Native-Method-Stacks）" class="headerlink" title="本地方法栈（Native Method Stacks）"></a>本地方法栈（Native Method Stacks）</h5><p>本地方法栈与虚拟机栈所发挥的作用非常相似，其区别是虚拟机栈为虚拟机执行 Java 方法服务，而本地方法栈则是为虚拟机使用到的 native 方法服务。虚拟机规范中对本地方法栈中的方法使用的语言、使用方式与数据结构并没有强制规定，因此具体的虚拟机可以自由实现它。</p>
+<h5 id="堆（Heap）"><a href="#堆（Heap）" class="headerlink" title="堆（Heap）"></a>堆（Heap）</h5><p>Java 堆是 Java 虚拟机所管理的内存中最大的一块。Java 堆是被所有线程共享的内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存。</p>
+<p>Java 堆是垃圾收集器管理的主要区域，如果从内存回收的角度看，Java 堆中还可以细分为：新生代和老年代，新生代又分为 Eden 区、From Survivor 区、To Survivor 区，默认情况下新生代按照 8:1:1 的比例来分配。</p>
+<h5 id="方法区（Method-Area）"><a href="#方法区（Method-Area）" class="headerlink" title="方法区（Method Area）"></a>方法区（Method Area）</h5><p>方法区又叫非堆（Non-Heap），也是属于所有线程共享的内存区域，它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
+<p>参考链接：<a href="https://mp.weixin.qq.com/s?__biz=MzI4NDY5Mjc1Mg==&amp;mid=2247483949&amp;idx=1&amp;sn=8b69d833bbc805e63d5b2fa7c73655f5&amp;chksm=ebf6da52dc815344add64af6fb78fee439c8c27b539b3c0e87d8f6861c8422144d516ae0a837&amp;cur_album_id=1326602114365276164&amp;scene=189#rd" target="_blank" rel="noopener">jvm系列(二):JVM内存结构</a></p>
+<h4 id="GC-算法与垃圾收集器"><a href="#GC-算法与垃圾收集器" class="headerlink" title="GC 算法与垃圾收集器"></a>GC 算法与垃圾收集器</h4><p>GC 即垃圾收集（Garbage Collection）。JVM 中，程序计数器、虚拟机栈、本地方法栈都是随线程而生随线程而灭，栈帧随着方法的进入和退出做入栈和出栈的操作，实现了自动的内存清理，因此，内存的垃圾回收主要集中于 java 堆和方法区中，在程序的运行期间，这部分内存的分配和使用都是动态的。</p>
+<h5 id="对象存活判断"><a href="#对象存活判断" class="headerlink" title="对象存活判断"></a>对象存活判断</h5><ol>
+<li>引用计数法：每个对象有一个引用计数属性，新增一个引用时计数加 1，引用释放时计数减 1，计数为 0 时可以回收。此方法虽然简单，但无法解决对象相互循环引用的问题。</li>
+<li>可达性分析：从 GC Roots 开始向下搜索，搜索所走过的路径称为引用链。当一个对象到 GC Roots 没有任何引用链相连时，则证明此对象是不可用的。不可达对象。在 Java 语言中，GC Roots 包括：1）虚拟机栈中引用的对象；2）方法区中类静态属性实体引用的对象；3）方法区中常量引用的对象；4）本地方法栈中 JNI 引用的对象。</li>
+</ol>
+<h5 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h5><ol>
+<li><p>标记-清除算法<br>标记-清除（Mark-Sweep）算法，是最基础的收集算法。算法分为“标记”和“清除”两个阶段，首先标记出所有需要回收的对象，在标记完成后统一回收掉所有被标记的对象。</p>
+<p> 缺点：1）效率问题，标记和清除过程的效率都不高；2）空间问题，标记-清除算法之后会产生大量不连续的内存碎片，空间碎片太多可能会导致当程序中后面的运行过程中需要分配较大对象时无法找到足够的连续内存而不得不提前触发另一次垃圾收集动作。</p>
+</li>
+<li><p>复制算法<br>复制（Copying）算法，它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，就将存活着的对象复制到另外一块上面，然后再把已使用过的内存空间一次清理掉。</p>
+<p> 这样使用每次都是对其中的一块进行内存回收，内存分配时也就不用考虑内存碎片等复杂情况，只要移动堆顶指针，按顺序分配内存即可，实现简单，运行高效。只是这种算法的代价是将内存缩小为原来的一半，持续复制长生存期的对象则导致效率降低。</p>
+</li>
+<li><p>标记-整理算法<br>标记-整理（Mark-Compact）算法，针对复制算法的缺点，提出了标记-整理算法，标记过程仍和标记-清除算法一样，但后续不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存。</p>
+</li>
+<li><p>分代收集算法<br>分代收集（Generational Collection）算法，基本假设：绝大部分对象的生命周期都非常短暂，存活时间短。Java 堆分为新生代和老年代，根据各个年代的特点采用最适当的收集算法。在新生代中，每次垃圾收集时都发现有大批对象死去，只有少量存活，那就选用复制算法，只需要付出少量存活对象的复制成本就可以完成收集。而老年代中因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“标记-清理”或“标记-整理”算法来进行回收。</p>
+</li>
+</ol>
+<h5 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h5><p>如果说垃圾收集算法是内存回收的方法论，垃圾收集器就是内存回收的具体实现</p>
+<ol>
+<li>Serial 收集器<br>串行收集器是最古老，最稳定以及效率高的垃圾回收器，只使用一个线程去回收，可能会产生较长的停顿。新生代、老年代都使用串行回收；新生代采用复制算法、老年代采用标记-整理算法；垃圾收集的过程会 Stop The World。</li>
+</ol>
+<p>参数控制：<br>    <code>-XX:+UseSerialGC</code> 串行收集器</p>
+<h5 id="ParNew-收集器"><a href="#ParNew-收集器" class="headerlink" title="ParNew 收集器"></a>ParNew 收集器</h5><p>ParNew 收集器其实就是 Serial 收集器的多线程版本。新生代并行回收，老年代串行回收；新生代采用复制算法、老年代采用标记-整理算法。</p>
+<p>参数控制：<br>    <code>-XX:+UseParNewGC</code> ParNew 收集器<br>    <code>-XX:ParallelGCThreads</code> 限制线程数量</p>
+<h5 id="Parallel-收集器"><a href="#Parallel-收集器" class="headerlink" title="Parallel 收集器"></a>Parallel 收集器</h5><p>Parallel 收集器类似 ParNew 收集器，Parallel 收集器更关注系统的吞吐量。可以通过参数打开自适应调节策略，虚拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的停顿时间或最大吞吐量；也可以通过参数控制 GC 的时间不大于多少毫秒或者比例；新生代采用复制算法、老年代采用标记-整理算法。</p>
+<p>参数控制：<br>    <code>-XX:+UseParallelGC</code> Parallel 收集器 + 老年代串行</p>
+<h5 id="Parallel-Old-收集器"><a href="#Parallel-Old-收集器" class="headerlink" title="Parallel Old 收集器"></a>Parallel Old 收集器</h5><p>Parallel Old 收集器是 Parallel 收集器的老年代版本，使用多线程和“标记－整理”算法。这个收集器是在JDK 1.6中才开始提供。</p>
+<p>参数控制：<br>    <code>-XX:UseParallelOldGC</code> Parallel 收集器 + 老年代并行</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试总结/" rel="tag"># 面试总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/29/面试总结（二）-数据库/" rel="next" title="面试总结（二）-数据库">
+                <i class="fa fa-chevron-left"></i> 面试总结（二）-数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#平台无关性"><span class="nav-number">1.</span> <span class="nav-text">平台无关性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM（Java-虚拟机）"><span class="nav-number">2.</span> <span class="nav-text">JVM（Java 虚拟机）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java类的加载机制"><span class="nav-number">2.1.</span> <span class="nav-text">Java类的加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是类的加载"><span class="nav-number">2.1.1.</span> <span class="nav-text">什么是类的加载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类的生命周期"><span class="nav-number">2.1.2.</span> <span class="nav-text">类的生命周期</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类加载器"><span class="nav-number">2.1.3.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类的加载"><span class="nav-number">2.1.4.</span> <span class="nav-text">类的加载</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#JVM-类加载机制"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">JVM 类加载机制</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#类加载的三种方式"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">类加载的三种方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#双亲委派模型"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">双亲委派模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM-内存结构"><span class="nav-number">2.2.</span> <span class="nav-text">JVM 内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#程序计数器（Program-Counter-Register）"><span class="nav-number">2.2.1.</span> <span class="nav-text">程序计数器（Program Counter Register）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟机栈（JVM-Stacks）"><span class="nav-number">2.2.2.</span> <span class="nav-text">虚拟机栈（JVM Stacks）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#本地方法栈（Native-Method-Stacks）"><span class="nav-number">2.2.3.</span> <span class="nav-text">本地方法栈（Native Method Stacks）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#堆（Heap）"><span class="nav-number">2.2.4.</span> <span class="nav-text">堆（Heap）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法区（Method-Area）"><span class="nav-number">2.2.5.</span> <span class="nav-text">方法区（Method Area）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC-算法与垃圾收集器"><span class="nav-number">2.3.</span> <span class="nav-text">GC 算法与垃圾收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#对象存活判断"><span class="nav-number">2.3.1.</span> <span class="nav-text">对象存活判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#垃圾收集算法"><span class="nav-number">2.3.2.</span> <span class="nav-text">垃圾收集算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#垃圾收集器"><span class="nav-number">2.3.3.</span> <span class="nav-text">垃圾收集器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ParNew-收集器"><span class="nav-number">2.3.4.</span> <span class="nav-text">ParNew 收集器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Parallel-收集器"><span class="nav-number">2.3.5.</span> <span class="nav-text">Parallel 收集器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Parallel-Old-收集器"><span class="nav-number">2.3.6.</span> <span class="nav-text">Parallel Old 收集器</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>

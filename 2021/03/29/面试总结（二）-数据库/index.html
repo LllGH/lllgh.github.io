@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="面试总结,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="MySQLMySQL 存储引擎MySQL 给用户提供了多种存储引擎，可 通过命令 SHOW ENGINES 查看。在 MySQL 中，不需要在整个服务器中使用同一种存储引擎，针对具体的要求可以对每个表使用不同的存储引擎。 InnoDB InnoDB 是 MySQL 默认的事务型引擎，也是最重要、最广泛的存储引擎。它的设计是用来处理大量短期事务，短期事务大部分是正常提交的，很少回滚。InnoDB 的">
+<meta name="keywords" content="面试总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试总结（二）-数据库">
+<meta property="og:url" content="http://yoursite.com/2021/03/29/面试总结（二）-数据库/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="MySQLMySQL 存储引擎MySQL 给用户提供了多种存储引擎，可 通过命令 SHOW ENGINES 查看。在 MySQL 中，不需要在整个服务器中使用同一种存储引擎，针对具体的要求可以对每个表使用不同的存储引擎。 InnoDB InnoDB 是 MySQL 默认的事务型引擎，也是最重要、最广泛的存储引擎。它的设计是用来处理大量短期事务，短期事务大部分是正常提交的，很少回滚。InnoDB 的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-04-04T08:51:01.869Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试总结（二）-数据库">
+<meta name="twitter:description" content="MySQLMySQL 存储引擎MySQL 给用户提供了多种存储引擎，可 通过命令 SHOW ENGINES 查看。在 MySQL 中，不需要在整个服务器中使用同一种存储引擎，针对具体的要求可以对每个表使用不同的存储引擎。 InnoDB InnoDB 是 MySQL 默认的事务型引擎，也是最重要、最广泛的存储引擎。它的设计是用来处理大量短期事务，短期事务大部分是正常提交的，很少回滚。InnoDB 的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/03/29/面试总结（二）-数据库/">
+
+
+
+
+
+  <title>面试总结（二）-数据库 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/29/面试总结（二）-数据库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试总结（二）-数据库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-29T14:12:21+08:00">
+                2021-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><h4 id="MySQL-存储引擎"><a href="#MySQL-存储引擎" class="headerlink" title="MySQL 存储引擎"></a>MySQL 存储引擎</h4><p>MySQL 给用户提供了多种存储引擎，可 通过命令 <code>SHOW ENGINES</code> 查看。在 MySQL 中，不需要在整个服务器中使用同一种存储引擎，针对具体的要求可以对每个表使用不同的存储引擎。</p>
+<h5 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h5><ul>
+<li>InnoDB 是 MySQL 默认的事务型引擎，也是最重要、最广泛的存储引擎。它的设计是用来处理大量短期事务，短期事务大部分是正常提交的，很少回滚。InnoDB 的性能和自动崩溃恢复特性，使得它在非事务型存储的需求中，也很流行。</li>
+<li>InnoDB 最小的锁粒度是行级锁，通过间隙锁（next-key Lock）防止幻读的出现。InnoDB 基于聚簇索引建立，聚簇索引对主键查询有很高的性能，不过它的二级索引（非主键索引）必须包含主键列。使用非主键索引查询需通过回表查询获取行数据。</li>
+<li>InnoDB 支持外键。</li>
+</ul>
+<h5 id="MyISAN"><a href="#MyISAN" class="headerlink" title="MyISAN"></a>MyISAN</h5><ul>
+<li>MyISAM 是 MySQL 5.1 及之前的版本默认的存储引擎。MyISAM提供了大量的特性，包括全文索引、压缩、空间函数等。但有一个很大的缺陷是崩溃后无法安全恢复。对于只读的数据，或者表比较小，可以忍受修复操作，则依然可以使用MyISAM。</li>
+<li>MyISAM 不支持事务，最小的锁粒度为表级锁。读取的时候对表加共享锁，写入的时候加排他锁。MyISAM 使用非聚簇索引，数据与索引分离存储。</li>
+<li>MyISAM 不支持外键。</li>
+</ul>
+<a id="more"></a>
+<h4 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h4><p>索引是一种数据结构,可以帮助我们快速的进行数据的查找。MySQL 目前支持的索引数据结构有：B-Tree、full-text、hash 和 R-Tree 索引。</p>
+<p>B-Tree 索引是 MySQL 里应用最广泛的索引。除了 archive 基本所有的存储引擎都支持它；full-text 在 MySQL 里只有 MyISAM 支持它；hash 索引也只有 memory 及少数存储引擎支持这种索引；R-Tree 在 MySQL 中很少使用，仅支持 geometry 数据类型，R-Tree 的优势在于范围查找。</p>
+<h5 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h5><ul>
+<li>普通索引：最基本的索引，它没有任何限制。唯一任务就是加快系统对数据的访问速度。允许在定义索引的列插入重复值和空值。</li>
+<li>唯一索引：与普通索引类似，不同的是索引列的值必须唯一，允许有空值。如果是组合索引，则列值的组合必须唯一。</li>
+<li>主键索引：特殊的唯一索引，不允许有空值。一般是在建表的时候同时创建主键索引，一个表只能有一个主键。</li>
+<li>联合索引：联合索引是将原表的多个列共同组成一个索引，该索引指向创建时对应的多个字段，可以通过这几个字段进行查询。</li>
+</ul>
+<h5 id="hash-索引-amp-B-Tree-索引"><a href="#hash-索引-amp-B-Tree-索引" class="headerlink" title="hash 索引 &amp; B-Tree 索引"></a>hash 索引 &amp; B-Tree 索引</h5><ol>
+<li>hash 索引底层使用的就是 hash 表，调用一次 hash 函数就可以获取相应的键值，之后进行回表查询获得实际数据；B-Tree 树底层实现是多路平衡查找树，对于每次查询都是从根节点出发，查找到叶子节点方可以获得所查键值，然后根据查询判断是否需要回表查询数据。</li>
+<li>一般情况下 hash 索引进行等值查询更快，但是不支持使用索引进行排序，也无法进行范围查询。</li>
+<li>hash 索引不稳定，性能不可预测，当发生 hash 碰撞时，效率可能极差；而 B-Tree 的查询效率比较稳定。</li>
+</ol>
+<h5 id="建立索引需要考虑的因素"><a href="#建立索引需要考虑的因素" class="headerlink" title="建立索引需要考虑的因素"></a>建立索引需要考虑的因素</h5><ol>
+<li>建立索引的时候一般要考虑到字段的使用频率，经常作为条件进行查询的字段比较适合。</li>
+<li>需要建立联合索引的话，还需要考虑联合索引中的顺序。想要命中索引，需要按照建立索引时的字段顺序挨个使用。（最左匹配原则）</li>
+<li>防止过多的索引对表造成太大的压力。其一，索引本身需要占据一定的存储空间。其二，在数据更新的时候需要更新索引数据。</li>
+</ol>
+<h5 id="无法使用索引的情况"><a href="#无法使用索引的情况" class="headerlink" title="无法使用索引的情况"></a>无法使用索引的情况</h5><ol>
+<li>使用不等于查询。</li>
+<li>列参与了数学运算或者函数。</li>
+<li>在字符串 like 时左边是通配符。类似于 ‘%aaa’。</li>
+<li>当 MySQL 分析全表扫描比使用索引快的时候。</li>
+<li>当使用联合索引，前面一个条件为范围查询，后面的即使符合最左匹配原则，也无法使用索引。</li>
+</ol>
+<h4 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h4><p>事务就是一系列的操作，他们要符合 ACID 特性。事务中的操作要么全部成功，要么全部失败。</p>
+<ul>
+<li>A (Atomicity 原子性)：一个事务中的操作要么全部成功，要么全部失败。不可能只执行一部分的操作。</li>
+<li>C (Consistency 一致性)：数据库总是从一个一致性的状态转移到另一个一致性的状态，不会存在中间状态。</li>
+<li>I (Isolation 隔离性)：通常情况下，一个事务在完全提交前，对其他事务是不可见的。</li>
+<li>D (Durability 持久性)：一旦事务提交，那么就永远是这个样子，即使系统崩溃也不会影响到这个事务的结果。</li>
+</ul>
+<h5 id="多事务并发情况下可能出现的问题"><a href="#多事务并发情况下可能出现的问题" class="headerlink" title="多事务并发情况下可能出现的问题"></a>多事务并发情况下可能出现的问题</h5><ul>
+<li>脏读：A 事务读取到了 B 事务未提交的内容。</li>
+<li>不可重复读：A 事务内的两次查询结果不一样，在 A 事务进行了第一次读取后，B 事务对该批数据进行了更新操作并提交，导致 A 事务第二次读取到的数据和第一次不一样。</li>
+<li>幻读：A 事务内的两次查询同一范围的时候，后一次查询看到了前一查询没有看到的行。幻读只在当前读下才会出现。</li>
+</ul>
+<h5 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h5><p>为了解决上述可能出现的问题，MySQL 提供了四种隔离级别</p>
+<ol>
+<li>READ UNCOMMITTED（未提交读）：这个隔离级别下，其他事物可以看到本事务没有提交的部分修改。因此会造成脏读的问题。这个级别的性能没有足够大的优势，但是会出现脏读、不可重复读和幻读，因此很少使用。</li>
+<li>READ COMMITTED（已提交读）：这个隔离级别下，其他事务只能读到本事务已经提交的部分。这个隔离级别可以避免脏读，但不能避免不可重复读。</li>
+<li>REPEATABLE READ（可重复读）：InnoDB 默认的事务隔离级别。这个隔离级别下，可避免不可重复读和脏读，但依然会出现幻读。</li>
+<li>SERIALIZABLE（可串行化），这是最高的隔离级别，可以解决脏读，不可重复读和幻读所有问题，因为他强制将所有的操作串行执行，这会导致并发性能极速下降，因此也不常用。</li>
+</ol>
+<h5 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h5><p>从锁的类别上来讲，有共享锁和排他锁。</p>
+<ul>
+<li>共享锁：又叫做读锁，当用户要进行数据的读取时，对数据加上共享锁.共享锁可以同时加上多个。</li>
+<li>排他锁：又叫做写锁，当用户要进行数据的写入时，对数据加上排他锁。排他锁只可以加一个，他和其他的排他锁，共享锁都相斥。</li>
+</ul>
+<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>Redis 是一个支持持久化的内存数据库，通过持久化机制把内存中的数据同步到硬盘文件来保证数据持久化。当 Redis 重启后通过把硬盘文件重新加载到内存，就能达到恢复数据的目的。</p>
+<h4 id="部署方式"><a href="#部署方式" class="headerlink" title="部署方式"></a>部署方式</h4><ol>
+<li>单点模式</li>
+<li>主从模式</li>
+<li>哨兵模式</li>
+<li>集群莫斯</li>
+</ol>
+<h4 id="持久化机制"><a href="#持久化机制" class="headerlink" title="持久化机制"></a>持久化机制</h4><p>Redis 提供了两种持久化的机制，分别是 RDB(Redis DataBase) 和 AOF(Append Only File)。</p>
+<h5 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h5><p>RDB 持久化就是在指定的时间间隔内将内存中的数据集以快照的形式写入磁盘。这也是默认的持久化方式。这种方式是将内存中数据以快照的方式写入到二进制的文件中，默认的文件名为 dump.rdb。</p>
+<p>触发机制：save（会阻塞当前 redis 服务器）、bgsave（异步，通过 fork 一个子线程完成）、自动配置（通过在 redis.conf 配置 save 参数实现）。</p>
+<ul>
+<li>优势：</li>
+</ul>
+<ol>
+<li>RDB 文件紧凑，全量备份，非常适合用于进行备份和灾难恢复。</li>
+<li>生成 RDB 文件的时候，redis 主线程会 fork() 一个字线程来处理所有的保存工作，主线程不需要进行任何磁盘 IO 操作。</li>
+<li>RDB 在恢复大数据集时的速度比 AOF 的恢复速度快。</li>
+</ol>
+<ul>
+<li>劣势：</li>
+</ul>
+<ol>
+<li>RDB 每次持久化备份都是全量备份，耗费时间较长，不够实时，在停机的时候会导致大量丢失数据。</li>
+</ol>
+<h5 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h5><p>AOF 持久化是将 redis 收到的写命令都通过 write 函数追加到文件中。通俗的理解就是日志记录。默认的文件名为 appendonly.aof。</p>
+<p>触发机制：通过配置 appendfsync 参数实现。参数选择有：always（同步持久化，每次发生数据变更会被立即记录到磁盘，性能差但数据完整性好）、everysec（异步操作，每秒记录一次，如果一秒内宕机，丢失一秒内的数据）、no（从不同步）。</p>
+<ul>
+<li>优势：</li>
+</ul>
+<ol>
+<li>AOF 可以更好的保护数据不丢失。</li>
+<li>AOF 日志文件没有任何磁盘寻址的开销，写入性能非常高，文件不容易损坏。</li>
+</ol>
+<ul>
+<li>劣势：</li>
+</ul>
+<ol>
+<li>对于同一份数据，AOF 日志文件通常比 RDB 数据快照文件更大。</li>
+<li>AOF 重写的时间较长，恢复较慢</li>
+</ol>
+<p>现在一般采用 RDB 和 AOF 混用的方式，RDB 负责在某个时刻把内存中的整个数据 dump 到磁盘中，AOF 负责记录 redis 在 dump 开始后对 redis key 的更改操作。即 RDB 全量备份，AOF 增量备份。</p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><ul>
+<li>string（字符串）<br>可以保存字符串、整数和浮点数</li>
+<li>list（链表）<br>一个链表，它的每一个节点都包含一个字符串</li>
+<li>set（集合）<br>无序集合，每一个元素都是一个字符串，且不能重复</li>
+<li>hash（哈希）<br>一个键值对应的无序集合</li>
+<li>sorted set（有序集合）<br>有序集合，可以包含字符串、整数、浮点数、分值（score），元素的排序是依据分值的大小来决定的。</li>
+<li>HyperLogLog（基数）<br>它的作用是计算重复的值，以确定存储的数量</li>
+</ul>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><h5 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h5><p>缓存穿透是指缓存和数据库都没有的数据，而用户不断发起请求，如 id = -1 的数据，这时的用户很可能是攻击者，攻击会导致数据库压力过大。</p>
+<p>解决方案：</p>
+<ol>
+<li>接口层增加校验。</li>
+<li>在缓存和数据库都没取到数据可将 key-value 对写成 key-null，缓存有效时间设置短一点。防止攻击者用同一个 id 暴力攻击。</li>
+<li>使用 BloomFilter （布隆过滤器）。</li>
+</ol>
+<h5 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h5><p>缓存击穿是指缓存中没有但数据库有的数据（一般是缓存时间到期），这时并发特别多，同时读缓存没读到数据，又同时读数据库去取数据，引起数据库压力瞬间增大。</p>
+<p>解决方案：</p>
+<ol>
+<li>设置热点数据永不过期。</li>
+<li>加互斥锁。当一个请求获取到锁读取数据库并将数据写入缓存，其他请求再从缓存中读取数据。</li>
+</ol>
+<h5 id="缓存血崩"><a href="#缓存血崩" class="headerlink" title="缓存血崩"></a>缓存血崩</h5><p>缓存雪崩是指缓存中数据大批量到过期时间，而查询数据巨大，引起数据库压力过大甚至宕机。和缓存击穿不同的是，缓存击穿指并发查同一条数据，缓存雪崩是不同数据都过期了，很多数据都查不到从而查询数据库。</p>
+<p>解决方案：</p>
+<ol>
+<li>缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。</li>
+<li>如果缓存数据库是分布式存储，将热点数据均匀分布在不同缓存数据库中。</li>
+<li>设置热点数据永不过期。</li>
+</ol>
+<h4 id="redis-为什么这么快？"><a href="#redis-为什么这么快？" class="headerlink" title="redis 为什么这么快？"></a>redis 为什么这么快？</h4><ol>
+<li>纯内存操作。</li>
+<li>单线程操作，避免了频繁的上下文切换。</li>
+<li>采用了非阻塞 I/O 多路复用机制</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试总结/" rel="tag"># 面试总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/23/面试总结（一）-网络&IO/" rel="next" title="面试总结（一）-网络 & IO">
+                <i class="fa fa-chevron-left"></i> 面试总结（一）-网络 & IO
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/04/15/面试总结（三）-Java底层知识/" rel="prev" title="面试总结（三）-Java底层知识">
+                面试总结（三）-Java底层知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL"><span class="nav-number">1.</span> <span class="nav-text">MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-存储引擎"><span class="nav-number">1.1.</span> <span class="nav-text">MySQL 存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#InnoDB"><span class="nav-number">1.1.1.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MyISAN"><span class="nav-number">1.1.2.</span> <span class="nav-text">MyISAN</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引"><span class="nav-number">1.2.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#索引类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">索引类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hash-索引-amp-B-Tree-索引"><span class="nav-number">1.2.2.</span> <span class="nav-text">hash 索引 &amp; B-Tree 索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建立索引需要考虑的因素"><span class="nav-number">1.2.3.</span> <span class="nav-text">建立索引需要考虑的因素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#无法使用索引的情况"><span class="nav-number">1.2.4.</span> <span class="nav-text">无法使用索引的情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务"><span class="nav-number">1.3.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#多事务并发情况下可能出现的问题"><span class="nav-number">1.3.1.</span> <span class="nav-text">多事务并发情况下可能出现的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务隔离级别"><span class="nav-number">1.3.2.</span> <span class="nav-text">事务隔离级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁"><span class="nav-number">1.3.3.</span> <span class="nav-text">锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis"><span class="nav-number">2.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#部署方式"><span class="nav-number">2.1.</span> <span class="nav-text">部署方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#持久化机制"><span class="nav-number">2.2.</span> <span class="nav-text">持久化机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB"><span class="nav-number">2.2.1.</span> <span class="nav-text">RDB</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF"><span class="nav-number">2.2.2.</span> <span class="nav-text">AOF</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据类型"><span class="nav-number">2.3.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">2.4.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#缓存穿透"><span class="nav-number">2.4.1.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缓存击穿"><span class="nav-number">2.4.2.</span> <span class="nav-text">缓存击穿</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缓存血崩"><span class="nav-number">2.4.3.</span> <span class="nav-text">缓存血崩</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis-为什么这么快？"><span class="nav-number">2.5.</span> <span class="nav-text">redis 为什么这么快？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>

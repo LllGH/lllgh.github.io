@@ -366,6 +366,404 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/23/面试总结（一）-网络&IO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/03/23/面试总结（一）-网络&IO/" itemprop="url">面试总结（一）-网络 & IO</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-23T19:20:16+08:00">
+                2021-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="网络基础知识"><a href="#网络基础知识" class="headerlink" title="网络基础知识"></a>网络基础知识</h3><h4 id="TCP-连接"><a href="#TCP-连接" class="headerlink" title="TCP 连接"></a>TCP 连接</h4><p>客户端与服务器之间数据的发送和返回的过程当中需要创建一个叫TCP connection的东西；</p>
+<p>由于TCP不存在连接的概念，只存在请求和响应，请求和响应都是数据包，它们之间都是经过由TCP创建的一个从客户端发起，服务器接收的类似连接的通道，这个连接可以一直保持，http请求是在这个连接的基础上发送的；</p>
+<p>在一个TCP连接上是可以发送多个http请求的，不同的版本这个模式不一样。</p>
+<p>在HTTP/1.0中这个TCP连接是在http请求创建的时候同步创建的，http请求发送到服务器端，服务器端响应了之后，这个TCP连接就关闭了；</p>
+<p>HTTP/1.1中可以以某种方式声明这个连接一直保持，一个请求传输完之后，另一个请求可以接着传输。这样的好处是：在创建一个TCP连接的过程中需要“三次握手”的消耗，“三次握手”代表有三次网络传输，如果TCP连接保持，第二个请求发送就没有这“三次握手”的消耗。</p>
+<p>HTTP/2.0中同一个TCP连接里还可以并发地传输http请求。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/03/23/面试总结（一）-网络&IO/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/29/面试总结（二）-数据库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/03/29/面试总结（二）-数据库/" itemprop="url">面试总结（二）-数据库</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-29T14:12:21+08:00">
+                2021-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><h4 id="MySQL-存储引擎"><a href="#MySQL-存储引擎" class="headerlink" title="MySQL 存储引擎"></a>MySQL 存储引擎</h4><p>MySQL 给用户提供了多种存储引擎，可 通过命令 <code>SHOW ENGINES</code> 查看。在 MySQL 中，不需要在整个服务器中使用同一种存储引擎，针对具体的要求可以对每个表使用不同的存储引擎。</p>
+<h5 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h5><ul>
+<li>InnoDB 是 MySQL 默认的事务型引擎，也是最重要、最广泛的存储引擎。它的设计是用来处理大量短期事务，短期事务大部分是正常提交的，很少回滚。InnoDB 的性能和自动崩溃恢复特性，使得它在非事务型存储的需求中，也很流行。</li>
+<li>InnoDB 最小的锁粒度是行级锁，通过间隙锁（next-key Lock）防止幻读的出现。InnoDB 基于聚簇索引建立，聚簇索引对主键查询有很高的性能，不过它的二级索引（非主键索引）必须包含主键列。使用非主键索引查询需通过回表查询获取行数据。</li>
+<li>InnoDB 支持外键。</li>
+</ul>
+<h5 id="MyISAN"><a href="#MyISAN" class="headerlink" title="MyISAN"></a>MyISAN</h5><ul>
+<li>MyISAM 是 MySQL 5.1 及之前的版本默认的存储引擎。MyISAM提供了大量的特性，包括全文索引、压缩、空间函数等。但有一个很大的缺陷是崩溃后无法安全恢复。对于只读的数据，或者表比较小，可以忍受修复操作，则依然可以使用MyISAM。</li>
+<li>MyISAM 不支持事务，最小的锁粒度为表级锁。读取的时候对表加共享锁，写入的时候加排他锁。MyISAM 使用非聚簇索引，数据与索引分离存储。</li>
+<li>MyISAM 不支持外键。</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/03/29/面试总结（二）-数据库/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/15/面试总结（三）-Java底层知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/04/15/面试总结（三）-Java底层知识/" itemprop="url">面试总结（三）-Java底层知识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-15T11:30:14+08:00">
+                2021-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="平台无关性"><a href="#平台无关性" class="headerlink" title="平台无关性"></a>平台无关性</h3><p>平台无关性就是一种语言在计算机上的运行不受平台的约束，一次编译，到处运行。也就是说，用 Java 创建的可执行二进制程序，能够不加改变的运行于多个平台。<br>对于不通的平台，不同的硬件和操作系统，最主要的区别就是指令不同。因此，想要做到跨平台，最重要的就是可以根据对应的硬件和操作系统生成对应的二进制指令。而这一工作，主要由 Java 虚拟机完成。虽然 Java 语言是平台无关的，但是JVM却是平台有关的，不同的操作系统上面要安装对应的JVM。</p>
+<p><img src="/2021/04/15/面试总结（三）-Java底层知识/v2-39d91fed2de46967483337f867eeeb29_1440w.jpeg" alt></p>
+<ol>
+<li>Java源文件被编译器编译成字节码文件。</li>
+<li>JVM将字节码文件编译成相应的操作系统机器码。</li>
+<li>机器码调用相应操作系统的本地方法库执行相应的方法。</li>
+</ol>
+<p>Q1: 为什么要先编译成字节码再解析成机器码，而JVM不直接将字节码解析成机器码呢？</p>
+<ol>
+<li>准备工作：每次执行都需要各种检查，都要重新编译重新分析，所以引入了中间字节码，多次执行程序不需要反复编译。</li>
+<li>兼容性：也可以将别的语言解析成字节码。也可以被jvm执行，增加兼容扩展能力。</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/04/15/面试总结（三）-Java底层知识/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -416,7 +814,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -438,7 +836,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -475,7 +873,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
