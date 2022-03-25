@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="MySQL 版本升级（in-place upgrade 小版本升级 5.7.33 -&amp;gt; 5.7.37）下载 mysql 5.7.37 版本1[root@s00ythmysql02 local]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz 备份数据库">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 小版本升级">
+<meta property="og:url" content="http://yoursite.com/2022/03/25/MySQL 小版本升级/index.html">
+<meta property="og:site_name" content="Lll Blog">
+<meta property="og:description" content="MySQL 版本升级（in-place upgrade 小版本升级 5.7.33 -&amp;gt; 5.7.37）下载 mysql 5.7.37 版本1[root@s00ythmysql02 local]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz 备份数据库">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-03-25T08:20:42.693Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 小版本升级">
+<meta name="twitter:description" content="MySQL 版本升级（in-place upgrade 小版本升级 5.7.33 -&amp;gt; 5.7.37）下载 mysql 5.7.37 版本1[root@s00ythmysql02 local]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz 备份数据库">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/03/25/MySQL 小版本升级/">
+
+
+
+
+
+  <title>MySQL 小版本升级 | Lll Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lll Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/25/MySQL 小版本升级/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="紫苏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lll Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL 小版本升级</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-25T15:53:28+08:00">
+                2022-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="MySQL-版本升级（in-place-upgrade-小版本升级-5-7-33-gt-5-7-37）"><a href="#MySQL-版本升级（in-place-upgrade-小版本升级-5-7-33-gt-5-7-37）" class="headerlink" title="MySQL 版本升级（in-place upgrade 小版本升级 5.7.33 -&gt; 5.7.37）"></a>MySQL 版本升级（in-place upgrade 小版本升级 5.7.33 -&gt; 5.7.37）</h3><h4 id="下载-mysql-5-7-37-版本"><a href="#下载-mysql-5-7-37-版本" class="headerlink" title="下载 mysql 5.7.37 版本"></a>下载 mysql 5.7.37 版本</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 local]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<h4 id="备份数据库"><a href="#备份数据库" class="headerlink" title="备份数据库"></a>备份数据库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 local]# sudo /data/mysql/script/backup.sh</span><br><span class="line"></span><br><span class="line">mysqladmin: [Warning] Using a password on the command line interface can be insecure.</span><br><span class="line">mysql: [Warning] Using a password on the command line interface can be insecure.</span><br><span class="line">----------------------------</span><br><span class="line"></span><br><span class="line">./backup.sh: MySQL备份脚本</span><br><span class="line">开始于: 2022-02-09 14:30:07 3</span><br><span class="line"></span><br><span class="line">*********************************</span><br><span class="line">正在执行全新的完全备份...请稍等...</span><br><span class="line">*********************************</span><br><span class="line">数据库成功备份到:/data/mysql/backup/xtrabackup/full/2022-02-09_14-30-07/</span><br><span class="line">必须保留1份全备和全备2022-02-09_14-30-07以后的所有增量备份.</span><br><span class="line">rm: refusing to remove &quot;.&quot; or &quot;..&quot; directory: skipping &quot;.&quot;</span><br><span class="line"></span><br><span class="line">未找到可以删除的过期全备文件</span><br><span class="line"></span><br><span class="line">完成于: 2022-02-09 15:19:17 3</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="版本升级"><a href="#版本升级" class="headerlink" title="版本升级"></a>版本升级</h4><p>3.1 设置参数 innodb_fast_shutdown 为 0。</p>
+<p>注：innodb_fast_shutdown有0、1、2三个值。<br>参数值为0代表MySQL关闭，InnoDB需要完成所有的full purge和merge Insert buffer操作，这个过程需要一定的时间，有时可能会花上几个小时。<br>参数值为1是该参数的默认值，表示关闭MySQL时不完成full purge和Merge insert buffe操作，但是缓冲池中的脏页还是会写到磁盘中。<br>参数值为2时，表示既不完成full purge和Merge insert buffer操作，也不将缓冲池中的脏页刷新到磁盘，而是将日志写入日志文件中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql(root@10.81.106.93)&gt;set global innodb_fast_shutdown=0;</span><br><span class="line">mysql(root@10.81.106.93)&gt;select @@innodb_fast_shutdown;</span><br><span class="line">+------------------------+</span><br><span class="line">| @@innodb_fast_shutdown |</span><br><span class="line">+------------------------+</span><br><span class="line">|                      0 |</span><br><span class="line">+------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>3.2 关闭 mysql 服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 local]# systemctl stop mysql</span><br></pre></td></tr></table></figure>
+<p>3.3 解压 5.7.37 软件包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 local]# tar -zxvf mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<p>3.4 更改软链接地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 local]# mv mysql-5.7.37-linux-glibc2.12-x86_64 mysql-5.7.37</span><br><span class="line">[root@s00ythmysql02 bin]# ln -snf /usr/local/mysql-5.7.37/bin/mysql /bin/mysql</span><br><span class="line">[root@s00ythmysql02 bin]# ln -snf /usr/local/mysql-5.7.37/bin/mysqladmin /bin/mysqladmin</span><br></pre></td></tr></table></figure>
+<p>3.5 更改 /etc/my.cnf</p>
+<p>​    basedir = /usr/local/mysql-5.7.37</p>
+<p>3.6 启动 mysql 实例</p>
+<p>注：在启动过程中，需要添加 <code>–skip-grant-tables</code> 和 <code>–skip-networking</code> 参数，来保证没有任何的应用连接，让升级过程更加安全。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 bin]# /usr/local/mysql-5.7.37/bin/mysqld_safe --defaults-file=/etc/my.cnf --skip-grant-tables --skip-networking &amp;</span><br></pre></td></tr></table></figure>
+<p>3.7 升级系统表数据字典信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 bin]# /usr/local/mysql-5.7.37/bin/mysql_upgrade -uroot -p</span><br></pre></td></tr></table></figure>
+<p>3.8 升级成功重启 mysql 服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 bin]# /usr/local/mysql-5.7.37/bin/mysqladmin -uroot -p shutdown</span><br></pre></td></tr></table></figure>
+<h4 id="更新-mysql-自启动配置"><a href="#更新-mysql-自启动配置" class="headerlink" title="更新 mysql 自启动配置"></a>更新 mysql 自启动配置</h4><p>更新 mysql.service 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 bin]# vi /usr/lib/systemd/system/mysql.service</span><br></pre></td></tr></table></figure>
+<p>​    ExecStart=/usr/local/mysql-5.7.37/bin/mysqld_safe –defaults-file=/etc/my.cnf –user=mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@s00ythmysql02 bin]# systemctl daemon-reload</span><br><span class="line">[root@s00ythmysql02 bin]# systemctl start mysql</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/23/面试总结（四）-Java多线程/" rel="next" title="面试总结（四）-Java多线程">
+                <i class="fa fa-chevron-left"></i> 面试总结（四）-Java多线程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/03/25/MySQL 添加从库/" rel="prev" title="MySQL 添加从库">
+                MySQL 添加从库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">紫苏</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-版本升级（in-place-upgrade-小版本升级-5-7-33-gt-5-7-37）"><span class="nav-number">1.</span> <span class="nav-text">MySQL 版本升级（in-place upgrade 小版本升级 5.7.33 -&gt; 5.7.37）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载-mysql-5-7-37-版本"><span class="nav-number">1.1.</span> <span class="nav-text">下载 mysql 5.7.37 版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备份数据库"><span class="nav-number">1.2.</span> <span class="nav-text">备份数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#版本升级"><span class="nav-number">1.3.</span> <span class="nav-text">版本升级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新-mysql-自启动配置"><span class="nav-number">1.4.</span> <span class="nav-text">更新 mysql 自启动配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫苏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 代码块复制功能 -->
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+  <script type="text/javascript" src="/js/src/clipboard-use.js"></script>
+</body>
+</html>
